@@ -2,8 +2,8 @@
 <!--
   MUTARI — Barter & Marketplace
   ==============================
-  Versi   : 1.9.78
-  Build   : 106
+  Versi   : 1.10.0
+  Build   : 107
   Berkas  : index.html (GitHub) · mutari-app-v1.9.78.html (uji langsung)
   Logo    : TERTANAM inline (base64) di dalam berkas ini — JANGAN dihapus.
   Tema    : hanya GELAP (fitur mode terang sudah dihapus).
@@ -60,7 +60,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="MUTARI">
 <meta name="description" content="MUTARI — Barter &amp; Marketplace. Ajak tukar barang, COD aman dengan titik temu, poin MP, komunitas barter, dan perlindungan transaksi.">
-<title>MUTARI — Barter &amp; Marketplace · v1.9.78</title>
+<title>MUTARI — Barter &amp; Marketplace · v1.10.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2050,13 +2050,14 @@ const state = {
   timer: null
 };
 
-const APP_VERSION = '1.9.78';
-const APP_BUILD = 106;
+const APP_VERSION = '1.10.0';
+const APP_BUILD = 107;
 const ACCOUNT_HISTORY_MAX=1;   /* v1.9.70: halaman login hanya menampilkan akun terakhir dipakai */
 /* OAuth Client ID (Web) untuk login Google sungguhan. Kosongkan untuk memakai form email.
    Bisa juga diatur dari Pengaturan -> Google Client ID (tersimpan lokal). */
 const GOOGLE_CLIENT_ID = '';
 const CHANGELOG = [
+  ['1.10.0','ALUR BARTER PENUH: SATU HALAMAN UNTUK KEDUA PIHAK. (1) Halaman lawan barter kini dipakai bersama: sisi PENAWAR (menunggu respon, hanya Batalkan) dan sisi PEMILIK BARANG (Penawaran masuk + tombol Terima/Tolak) — tidak lagi dua halaman berbeda. (2) Batas waktu respon 72 jam ditampilkan berjalan (mis. 1h 23j). (3) Deposit jaminan 20 MP per pihak, ditahan saat penawaran diterima dan dikembalikan penuh saat barter selesai. (4) Metode pertukaran COD / Jasa Kirim (JNE, J&T Express, SiCepat, AnterAja, Ninja Xpress, Pos Indonesia, Grab Express, GoSend, Lainnya) / Asuransi Premium (60/100/150/200 MP) diusulkan satu pihak lalu harus disetujui pihak lain; ada tombol Terima/Tolak dan Ubah. (5) Setelah kedua pihak sepakat muncul baris konfirmasi dua pihak dan tombol Selesaikan Barter. (6) Konfirmasi selesai WAJIB memakai minimal 1 foto bukti serah terima + status konfirmasi kedua pihak. (7) Setelah kedua pihak konfirmasi: +30 MP langsung cair, +20 MP bonus review ditahan, +10 MP menulis ulasan; batas review 7 hari. (8) Halaman Beri Ulasan (bintang 1-5, chip penilaian, komentar maks 500), Sertifikat Barter (kode unik, dampak lingkungan, bagikan), dan halaman Dampak Lingkungan + Milestone Lingkungan. (9) Semua aktivitas barter (awal & akhir) selalu memunculkan notifikasi di KEDUA akun, dan seluruh perubahan disinkronkan ke Firestore sehingga kedua akun selalu sama. PENTING: WAJIB publish ulang Rules Firestore (field barter baru diizinkan) supaya setujui/tolak/konfirmasi jalan lintas perangkat.'],
   ['1.9.78','PERBAIKAN BARTER: CHAT LAWAN & TOMBOL SETUJUI/TOLAK. (1) Penawaran barter kini selalu membawa email pemilik yang benar. Sebelumnya, untuk barang milik akun lain atau barang dari cloud, field ownerEmail kosong sehingga: penawaran TIDAK pernah sampai ke pemilik, tombol Setujui/Tolak tidak muncul, dan chat negosiasi tidak punya tujuan (pesan tidak terkirim). (2) Deteksi barter masuk kini mencocokkan ownerEmail ATAU ownerKey ATAU ownerId sehingga sisi pemilik barang selalu menerima penawaran. (3) Chat negosiasi dua arah diperbaiki: pesan dikirim ke email lawan lewat koleksi messages, dan halaman negosiasi otomatis menyegarkan saat pesan lawan masuk tanpa menutup halaman atau menghapus ketikan. (4) Tombol dipertegas menjadi "Setujui Penawaran" dan "Tolak". (5) Deposit barter 50 MP hanya ditarik setelah penawaran disetujui (sebelumnya ditarik saat masih menunggu respon). PENTING: aturan Firestore koleksi barters ikut diperbarui (pihak lawan boleh memperbarui status/trail/negosiasi) — WAJIB publish ulang Rules di Firebase Console agar Setujui/Tolak jalan lintas perangkat.'],
   ['1.9.77','ATURAN & PELANGGARAN BARTER DITERAPKAN PENUH sesuai dokumen "Aturan & Pelanggaran Barter v1.0". (1) Katalog 19 jenis pelanggaran dengan poin minus persis sesuai dokumen, dikelompokkan Paling Berat / Berat / Sedang / Ringan. (2) SISTEM SANKSI OTOMATIS: total poin minus ≤ -20 = Peringatan (notifikasi resmi + badge di profil, masih bisa barter), ≤ -50 = Suspensi (akun disuspend sementara: tidak bisa membuat penawaran barter baru, tidak bisa upload barang baru, barter berjalan masih bisa diselesaikan, menunggu review admin), ≤ -75 = Banned Permanen (akun diblokir, semua fitur ditutup, listing dihapus, banding lewat email support). (3) PROSES PELAPORAN: tombol Laporkan di halaman Negosiasi barter, detail barang, dan profil pengguna; form meminta jenis pelanggaran, kronologi (WAJIB), dan bukti gambar (opsional); status awal "Menunggu Review" dan poin minus TIDAK langsung diterapkan. (4) Halaman "Aturan & Pelanggaran Barter" berisi Bagian 1-4 (aturan umum, jenis pelanggaran, sanksi otomatis, proses pelaporan) dapat dibuka dari menu Akun. (5) Portal Admin: daftar laporan kini menampilkan jenis, tingkat, dan poin; ada tombol Setujui (poin minus otomatis diterapkan ke akun lewat adminGrants) dan Tolak. Tidak ada perubahan aturan Firestore yang wajib — koleksi violations (create: user, update: admin) dan adminGrants (create: admin) sudah mendukung.'],
   ['1.9.76','PERBAIKAN HALAMAN MASUK (LOGIN). Kolom "Konfirmasi Password" sekarang HANYA muncul saat mendaftar (Sign up). Sebelumnya, bila email yang dimasukkan belum tersimpan di perangkat itu, halaman "Masuk ke MUTARI" ikut menampilkan formulir buat akun dengan DUA kolom password + centang syarat, sehingga tampak seperti pendaftaran akun baru. Kini halaman masuk selalu hanya punya SATU kolom password dengan tombol "Masuk"; kolom konfirmasi dan daftar syarat hanya tampil pada alur "Buat Akun MUTARI". Akun baru tetap dibuat bila email belum ada, tetapi tampilannya tidak lagi menyerupai pendaftaran. Tidak ada perubahan lain pada fitur MUTARI.'],
@@ -3193,7 +3194,7 @@ const FB_RULES=[
 "      allow read: if isSigned();",
 "      allow create: if isSigned() && request.resource.data.fromUid == request.auth.uid;",
 "      allow update: if (isSigned()",
-"          // v1.9.78: identitas akun MUTARI memakai EMAIL (auth perangkat anonim), sehingga\n          // pihak lawan barter tidak selalu punya UID yang sama dengan pemilik barang.\n          // Karena itu pengguna yang sudah login boleh memperbarui HANYA field kolaboratif\n          // barter di bawah ini (status/negosiasi/pengiriman/konfirmasi). Field identitas\n          // dan kepemilikan tetap tidak bisa diubah oleh non-admin.\n          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt','cancelledAt','cancelledBy','trail','ship','confirms','reviews','deposits','insurance','doneAt','refunded','ownerKey','ownerEmail']))",
+"          // v1.9.78: identitas akun MUTARI memakai EMAIL (auth perangkat anonim), sehingga\n          // pihak lawan barter tidak selalu punya UID yang sama dengan pemilik barang.\n          // Karena itu pengguna yang sudah login boleh memperbarui HANYA field kolaboratif\n          // barter di bawah ini (status/negosiasi/pengiriman/konfirmasi). Field identitas\n          // dan kepemilikan tetap tidak bisa diubah oleh non-admin.\n          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt','cancelledAt','cancelledBy','trail','ship','confirms','confirmPhotos','reviews','deposits','insurance','insAmount','doneAt','refunded','ownerKey','ownerEmail','respondBy','acceptedAt','method','methodBy','methodName','methodApproved','methodApprovedBy','rewarded','reviewReleased','reviewDeadline','notifiedStart','notifiedEnd','certNo']))",
 "        || isAdmin();",
 "      allow delete: if isAdmin();",
 "    }",
@@ -5849,7 +5850,7 @@ function rejectBarter(id){
 
 
 /* ===== TAHAP 2-5: NEGOSIASI, PENGIRIMAN, KONFIRMASI, REVIEW ===== */
-const BARTER_DEPOSIT=50, BARTER_INSURANCE=50;
+const BARTER_DEPOSIT=20, BARTER_INSURANCE=60;
 const BARTER_STEPS=['Penawaran','Diterima','Negosiasi','Pengiriman','Tukar','Konfirmasi','Selesai','Review'];
 function barterPeerEmail(b){
   try{
@@ -10028,6 +10029,1089 @@ function sbInit(){
   try{ sbListenMessages(); }catch(e){}        /* SOSIAL: chat */
   try{ sbListenPosts(); }catch(e){}           /* SOSIAL: postingan komunitas */
 }
+
+/* =====================================================================================
+   MUTARI v1.10.0 — ALUR BARTER PENUH (Satu halaman untuk KEDUA peran lawan barter)
+   -------------------------------------------------------------------------------------
+   Halaman ini menggantikan halaman negosiasi lama. Isinya persis alur resmi MUTARI:
+     Penawaran -> Menunggu respon (72 jam) -> Terima/Tolak -> Deposit 20 MP ->
+     Pilih metode (COD / Jasa Kirim / Asuransi Premium) -> Kesepakatan dua pihak ->
+     Konfirmasi + FOTO BUKTI wajib -> Selesai (+30 MP) -> Review (+20 +10 MP) ->
+     Sertifikat Barter + Dampak Lingkungan.
+   Semua perubahan dikirim ke Firestore sehingga KEDUA akun tersinkron, dan setiap
+   aktivitas awal & akhir barter selalu memunculkan notifikasi di kedua akun.
+   ===================================================================================== */
+(function(){ /* gaya tampilan modul barter baru */
+  try{
+    var css=[
+    '.bx-head{display:flex;align-items:center;gap:9px;padding:calc(env(safe-area-inset-top,0px) + 12px) 12px 10px;border-bottom:1px solid var(--line);flex-shrink:0;background:var(--bg)}',
+    '.bx-av{width:38px;height:38px;border-radius:50%;background:rgba(18,169,126,.18);color:#1BC190;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;overflow:hidden}',
+    '.bx-av img{width:100%;height:100%;object-fit:cover}',
+    '.bx-head-t{flex:1;min-width:0}',
+    '.bx-head-t b{font-size:14.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+    '.bx-head-t span{font-size:11px;color:var(--text2)}',
+    '.bx-flag{background:none;border:none;font-size:15px;line-height:1;padding:6px;cursor:pointer}',
+    '.bx-pad{padding:10px 12px 0}',
+    '.bx-swap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:10px}',
+    '.bx-swap-item{flex:1;min-width:0;text-align:center}',
+    '.bx-swap-ph{width:46px;height:46px;margin:0 auto 6px;border-radius:11px;background:rgba(18,169,126,.14);color:#1BC190;display:flex;align-items:center;justify-content:center;overflow:hidden}',
+    '.bx-swap-ph img{width:100%;height:100%;object-fit:cover}',
+    '.bx-swap-ph.alt{background:rgba(233,169,61,.16);color:#E9A93D}',
+    '.bx-swap-item b{font-size:12.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+    '.bx-swap-item span{font-size:10.5px;color:var(--text2)}',
+    '.bx-swap-ic{font-size:19px;color:var(--text2);flex-shrink:0}',
+    '.bx-strip{display:flex;gap:9px;align-items:flex-start;border-radius:12px;padding:11px 12px;margin-top:10px;border:1px solid var(--line)}',
+    '.bx-strip.wait{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.35)}',
+    '.bx-strip.info{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.4)}',
+    '.bx-strip.ok{background:rgba(18,169,126,.12);border-color:rgba(18,169,126,.38)}',
+    '.bx-strip.bad{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.38)}',
+    '.bx-strip-t{flex:1;min-width:0}.bx-strip-t b{font-size:13px;display:block}.bx-strip-t span{font-size:11.5px;color:var(--text2)}',
+    '.bx-spin{width:15px;height:15px;border-radius:50%;border:2px solid rgba(245,158,11,.35);border-top-color:#E9A93D;animation:bxspin .8s linear infinite;flex-shrink:0;margin-top:2px}',
+    '@keyframes bxspin{to{transform:rotate(360deg)}}',
+    '.bx-count{display:flex;align-items:center;gap:8px;margin-top:10px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:11px;padding:9px 11px;font-size:12.5px;font-weight:700;color:#E9A93D}',
+    '.bx-hint{font-size:11.5px;color:var(--text2);margin-top:8px;line-height:1.5}',
+    '.bx-inbox{margin-top:10px;border:1px solid rgba(245,158,11,.45);background:rgba(245,158,11,.09);border-radius:13px;padding:11px}',
+    '.bx-inbox b{font-size:13px}.bx-inbox p{font-size:11.5px;color:var(--text2);margin:4px 0 9px}',
+    '.bx-inbox-act{display:flex;gap:8px}',
+    '.bx-inbox-act button{flex:1;padding:10px;border-radius:11px;font-weight:800;font-size:13px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text)}',
+    '.bx-inbox-act .ok{background:#12A97E;border-color:#12A97E;color:#fff}',
+    '.bx-inbox-act .no{background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.5);color:#EF4444}',
+    '.bx-dep{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;background:rgba(18,169,126,.1);border:1px solid rgba(18,169,126,.32);border-radius:12px;padding:10px 12px;font-size:12.5px}',
+    '.bx-dep b{color:#1BC190}',
+    '.bx-pick{margin-top:12px;border:1px solid var(--line);border-radius:13px;padding:11px}',
+    '.bx-pick>b{font-size:13px;display:block;margin-bottom:9px}',
+    '.bx-pick-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}',
+    '.bx-pick-btns button{padding:12px 6px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);font-weight:800;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:5px}',
+    '.bx-pick-btns button span{font-size:18px}',
+    '.bx-mrow{display:flex;gap:9px;align-items:center;margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:10px 11px;background:rgba(255,255,255,.03)}',
+    '.bx-mrow.done{border-color:rgba(18,169,126,.4);background:rgba(18,169,126,.08)}',
+    '.bx-mrow-ic{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;color:#1BC190}',
+    '.bx-mrow-ic svg{width:17px;height:17px}',
+    '.bx-mrow-t{flex:1;min-width:0}.bx-mrow-t b{font-size:12.5px;display:block}.bx-mrow-t span{font-size:11px;color:var(--text2)}',
+    '.bx-mrow-act{display:flex;gap:6px;flex-shrink:0}',
+    '.bx-mini{padding:8px 12px;border-radius:10px;font-size:12px;font-weight:800;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text)}',
+    '.bx-mini.ok{background:#12A97E;border-color:#12A97E;color:#fff}',
+    '.bx-mini.no{background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.5);color:#EF4444}',
+    '.bx-cfrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:10px 11px}',
+    '.bx-cf{font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:99px;background:rgba(255,255,255,.06);color:var(--text2)}',
+    '.bx-cf.on{background:rgba(18,169,126,.22);color:#1BC190}',
+    '.bx-cfarr{color:var(--text3);font-size:12px}.bx-cfarr svg{width:13px;height:13px}',
+    '.bx-cfturn{margin-left:auto;font-size:11.5px;font-weight:800;color:#E9A93D}',
+    '.bx-actions{padding:12px 12px 2px;display:flex;flex-direction:column;gap:8px}',
+    '.bx-actions button{padding:12px;border-radius:12px;font-weight:800;font-size:13.5px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text)}',
+    '.bx-actions .primary{background:#12A97E;border-color:#12A97E;color:#fff}',
+    '.bx-actions .danger{background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.5);color:#EF4444}',
+    '.bx-chat{padding:6px 0 10px}',
+    '.bx-msg{max-width:82%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.5;margin:4px 12px;word-break:break-word;white-space:pre-wrap}',
+    '.bx-msg.me{margin-left:auto;background:rgba(18,169,126,.22);border:1px solid rgba(18,169,126,.42)}',
+    '.bx-msg.you{margin-right:auto;background:rgba(255,255,255,.06);border:1px solid var(--line)}',
+    '.bx-msg.sys{margin:8px 12px;max-width:100%;background:rgba(255,255,255,.04);border:1px dashed var(--line);color:var(--text2);font-size:12px;text-align:center}',
+    '.bx-done{margin-top:12px;border-radius:14px;border:1px solid rgba(18,169,126,.4);background:rgba(18,169,126,.08);padding:14px 12px;text-align:center}',
+    '.bx-done h3{font-size:16px;color:#1BC190}',
+    '.bx-done p{font-size:12px;color:var(--text2);margin-top:4px}',
+    '.bx-wait{margin-top:12px;border:1px solid rgba(233,169,61,.45);background:rgba(233,169,61,.1);border-radius:13px;padding:12px}',
+    '.bx-wait b{color:#E9A93D;font-size:13.5px}.bx-wait p{font-size:12px;color:var(--text2);margin-top:5px;line-height:1.5}',
+    '.bx-dbtn{display:flex;gap:8px;margin-top:10px}',
+    '.bx-dbtn button{flex:1;padding:11px;border-radius:12px;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text)}',
+    '.bx-dbtn .green{background:#12A97E;border-color:#12A97E;color:#fff}',
+    '.bx-opt{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;color:inherit}',
+    '.bx-opt-ic{font-size:20px}',
+    '.bx-opt div b{font-size:13.5px;display:block}.bx-opt div span{font-size:11.5px;color:var(--text2)}',
+    '.bx-tips{margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:11px;background:rgba(255,255,255,.03)}',
+    '.bx-tips b{font-size:12.5px}.bx-tips ul{margin:7px 0 0 16px}.bx-tips li{font-size:11.5px;color:var(--text2);line-height:1.6}',
+    '.bx-couriers{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}',
+    '.bx-cour{padding:13px 10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);font-weight:700;font-size:13px}',
+    '.bx-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:6px}',
+    '.bx-tier{padding:11px 4px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);font-weight:800;font-size:12px}',
+    '.bx-tier.on{background:rgba(18,169,126,.22);border-color:#12A97E;color:#1BC190}',
+    '.bx-sum{margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:11px}',
+    '.bx-sum div{display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;color:var(--text2)}',
+    '.bx-sum div b{color:var(--text)}',
+    '.bx-cfbox{border:1px solid var(--line);border-radius:12px;padding:11px;margin:6px 0 12px}',
+    '.bx-cfbox>b{font-size:13px;display:block;margin-bottom:8px}',
+    '.bx-cfline{display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0}.bx-cfline b{color:#1BC190}',
+    '.bx-upload{display:block;text-align:center;padding:14px;border:1px dashed var(--line);border-radius:12px;font-weight:700;font-size:13px;color:#1BC190;margin-bottom:10px}',
+    '.bx-proof{position:relative;margin-bottom:10px}.bx-proof img{width:100%;border-radius:12px;display:block}',
+    '.bx-proof-x{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,.6);color:#fff;font-size:16px}',
+    '.bx-warn{border:1px solid rgba(233,169,61,.45);background:rgba(233,169,61,.1);border-radius:11px;padding:10px;font-size:11.5px;color:#E9A93D;line-height:1.5;margin-bottom:10px}',
+    '.bx-check{display:flex;gap:9px;align-items:center;font-size:12.5px;padding:7px 2px;color:var(--text-soft)}',
+    '.bx-chips{display:flex;flex-wrap:wrap;gap:8px}',
+    '.bx-chip{padding:9px 12px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);font-size:12.5px;font-weight:600}',
+    '.bx-chip.on{border-color:#12A97E;background:rgba(18,169,126,.2);color:#1BC190}',
+    '.bx-stars{display:flex;justify-content:center;gap:8px}',
+    '.bx-stars button{background:none;border:none;font-size:34px;line-height:1;color:#3A3A40}',
+    '.bx-stars button.on{color:#E9A93D}',
+    '.bx-info{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:11px;font-size:11.5px;color:var(--text2);line-height:1.55;background:rgba(255,255,255,.03)}',
+    '.bx-cert{background:linear-gradient(165deg,#0E7A57,#0A5C42);border-radius:18px;padding:20px 16px;margin:12px}',
+    '.bx-cert-top{text-align:center;color:#fff}',
+    '.bx-cert-logo{display:inline-block;border:1px solid rgba(255,255,255,.4);border-radius:99px;padding:5px 14px;font-size:11px;font-weight:800;letter-spacing:1px}',
+    '.bx-cert-top h2{font-size:23px;margin:12px 0 2px}',
+    '.bx-cert-top .no{font-size:12.5px;opacity:.85}',
+    '.bx-cparties{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px 0}',
+    '.bx-cparty{text-align:center;color:#fff;flex:1;min-width:0}',
+    '.bx-cparty .av{width:56px;height:56px;border-radius:50%;margin:0 auto 6px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;border:2px solid rgba(255,255,255,.35);overflow:hidden}',
+    '.bx-cparty .av img{width:100%;height:100%;object-fit:cover}',
+    '.bx-cparty b{font-size:12.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+    '.bx-cmid{color:#fff;text-align:center;flex-shrink:0}.bx-cmid .h{font-size:22px}.bx-cmid span{font-size:9.5px;letter-spacing:1px;font-weight:800;display:block}',
+    '.bx-citems{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.16);border-radius:14px;padding:12px}',
+    '.bx-citem{flex:1;min-width:0;text-align:center;color:#fff}',
+    '.bx-citem .ph{width:100%;height:74px;border-radius:11px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:7px;font-size:24px}',
+    '.bx-citem .ph img{width:100%;height:100%;object-fit:cover}',
+    '.bx-citem b{font-size:12px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+    '.bx-citem i{font-size:10.5px;opacity:.8;font-style:normal}',
+    '.bx-citem-x{flex-shrink:0;color:#fff;font-size:20px}',
+    '.bx-cenv{background:rgba(0,0,0,.18);border-radius:13px;padding:12px;margin-top:12px;color:#fff;text-align:center}',
+    '.bx-cenv h4{font-size:12.5px;margin-bottom:8px}',
+    '.bx-cenv .g{display:flex;justify-content:center;gap:26px}',
+    '.bx-cenv .g b{font-size:17px;display:block}.bx-cenv .g span{font-size:10.5px;opacity:.82}',
+    '.bx-cmeta{display:flex;justify-content:space-between;margin-top:14px;color:#fff}',
+    '.bx-cmeta span{font-size:10.5px;opacity:.82;display:block}',
+    '.bx-cmeta b{font-size:13.5px}',
+    '.bx-slogan{text-align:center;color:rgba(255,255,255,.85);font-size:11.5px;font-style:italic;margin-top:14px}',
+    '.bx-env-hero{background:linear-gradient(160deg,#0E7A57,#0A5C42);border-radius:18px;padding:20px 16px;margin:12px;text-align:center;color:#fff}',
+    '.bx-env-hero .globe{font-size:38px}',
+    '.bx-env-hero h2{font-size:17px;margin:8px 0 4px}.bx-env-hero p{font-size:12px;opacity:.9}',
+    '.bx-env-hero .g{display:flex;justify-content:center;gap:14px;margin-top:16px}',
+    '.bx-env-hero .g div{flex:1;background:rgba(0,0,0,.18);border-radius:12px;padding:10px 6px}',
+    '.bx-env-hero .g b{font-size:16px;display:block}.bx-env-hero .g span{font-size:10px;opacity:.85}',
+    '.bx-env-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 12px}',
+    '.bx-env-card{border:1px solid var(--line);border-radius:13px;padding:12px;background:rgba(255,255,255,.03)}',
+    '.bx-env-card .e{font-size:19px}.bx-env-card b{font-size:17px;display:block;margin-top:6px}',
+    '.bx-env-card h4{font-size:12.5px}.bx-env-card p{font-size:11px;color:var(--text2);margin-top:3px;line-height:1.5}',
+    '.bx-mile{margin:14px 12px}',
+    '.bx-mile h4{font-size:13.5px;display:flex;gap:7px;align-items:center;margin-bottom:9px}',
+    '.bx-mile-item{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:7px}',
+    '.bx-mile-item.on{border-color:rgba(18,169,126,.45);background:rgba(18,169,126,.08)}',
+    '.bx-mile-item .e{font-size:19px}.bx-mile-item .t{flex:1;min-width:0}.bx-mile-item .t b{font-size:12.5px;display:block}.bx-mile-item .t span{font-size:11px;color:var(--text2)}',
+    '.bx-mile-item .p{font-size:12px;font-weight:800;color:var(--text2)}',
+    '.bx-mile-item.on .p{color:#1BC190}',
+    '.bx-home-card{display:block;width:calc(100% - 24px);margin:10px 12px 0;text-align:left;border:1px solid rgba(245,158,11,.45);background:rgba(245,158,11,.1);border-radius:14px;padding:11px;color:inherit}',
+    '.bx-home-card .r1{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:800;color:#E9A93D}',
+    '.bx-home-card .th{display:flex;align-items:center;gap:8px;margin:9px 0}',
+    '.bx-home-card .th div{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;overflow:hidden}',
+    '.bx-home-card .th img{width:100%;height:100%;object-fit:cover}',
+    '.bx-home-card .th .x{flex-shrink:0;color:var(--text2)}',
+    '.bx-home-card .nm{flex:1;min-width:0}.bx-home-card .nm b{font-size:13px;display:block}.bx-home-card .nm span{font-size:11px;color:var(--text2)}',
+    '.bx-home-card .cta{display:block;text-align:center;background:#12A97E;color:#fff;border-radius:11px;padding:10px;font-weight:800;font-size:13px}'
+    ].join('');
+    if(!document.getElementById('bx-style')){ var s=document.createElement('style'); s.id='bx-style'; s.textContent=css; document.head.appendChild(s); }
+  }catch(e){}
+})();
+
+/* ---------- konstanta & helper ---------- */
+const BARTER_REWARD=30, REVIEW_RELEASE=20, REVIEW_WRITE=10, BARTER_RESPONSE_MS=72*3600*1000;
+const INS_TIERS=[60,100,150,200];
+const COURIERS=['JNE','J&T Express','SiCepat','AnterAja','Ninja Xpress','Pos Indonesia','Grab Express','GoSend','Lainnya'];
+const REV_CHIPS=[
+  {t:'Barang Sesuai Deskripsi',e:'✅'},
+  {t:'Komunikasi Baik',e:'💬'},
+  {t:'Tepat Waktu COD',e:'⏰'},
+  {t:'Ramah & Sopan',e:'🤝'},
+  {t:'Barang Tidak Sesuai',e:'⚠️'},
+  {t:'Tidak Responsif',e:'😞'}
+];
+try{
+  BARTER_STATUS.accepted={label:'Diterima',color:'#12A97E',bg:'rgba(18,169,126,.18)'};
+  BARTER_STATUS.expired ={label:'Kedaluwarsa',color:'#8A8A93',bg:'rgba(138,138,147,.18)'};
+  BARTER_STATUS.review  ={label:'Perlu Ulasan',color:'#E9A93D',bg:'rgba(233,169,61,.18)'};
+}catch(e){}
+
+function findBarterById(id){ return (state.barters||[]).find(function(x){ return x && (x.id===id || x.cloudId===id); }); }
+function bxTrail(b,t){ b.trail=Array.isArray(b.trail)?b.trail:[]; b.trail.push({t:String(t||''),at:Date.now(),by:myEmail()}); }
+function barterRespondBy(b){ return Number(b&&b.respondBy)||((Number(b&&(b.time||b.createdAt))||Date.now())+BARTER_RESPONSE_MS); }
+function barterLeftMs(b){ return Math.max(0, barterRespondBy(b)-Date.now()); }
+function barterLeftLabel(ms){
+  var m=Math.floor(ms/60000); if(m<=0) return 'Waktu habis';
+  var d=Math.floor(m/1440), h=Math.floor((m%1440)/60), mm=m%60;
+  if(d>0) return d+'h '+h+'j';
+  if(h>0) return h+'j '+mm+'m';
+  return mm+'m';
+}
+function bxRevDeadlineText(b){
+  var d=new Date((b.doneTime||Date.now())+7*24*3600*1000);
+  return d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+}
+function bxDepositAmt(b){ try{ return Number((b.deposits&&b.deposits[myEmail()])||0); }catch(e){ return 0; } }
+function bxInsAmt(b){ try{ return Number((b.insurance&&b.insurance[myEmail()])||0); }catch(e){ return 0; } }
+function barterDoneCount(){ return (state.barters||[]).filter(function(b){ return b && b.status==='done'; }).length; }
+function bxCertCode(b){
+  try{
+    if(b.certNo) return b.certNo;
+    var h=7, s=String(b.id||b.cloudId||'MTR');
+    for(var i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; }
+    b.certNo='#MTR-'+('00000000'+Math.abs(h).toString(16).toUpperCase()).slice(-8);
+    return b.certNo;
+  }catch(e){ return '#MTR-UNKNOWN'; }
+}
+
+/* ---------- patch cloud (dipakai semua aksi) ---------- */
+function barterPatch(b, extra){
+  try{
+    if(!b) return;
+    var now=Date.now(); b.updatedAt=now;
+    var p={updatedAt:now};
+    ['status','respondBy','acceptedAt','deposits','insurance','insAmount','ship','confirms','confirmPhotos',
+     'reviews','refunded','rewarded','reviewReleased','method','methodBy','methodName','methodApproved',
+     'methodApprovedBy','doneAt','trail','cancelledAt','cancelledBy','ownerKey','ownerEmail','notifiedStart',
+     'notifiedEnd','certNo','reviewDeadline'].forEach(function(k){ if(b[k]!==undefined && b[k]!==null) p[k]=b[k]; });
+    if(extra) Object.keys(extra).forEach(function(k){ if(extra[k]!==undefined) p[k]=extra[k]; });
+    try{ LS.set('mutari_barters',state.barters); }catch(e){}
+    if(b.cloudId){ try{ sbWrite('barters', b.cloudId, p); }catch(e){} }
+    else { try{ sbPushBarter(b); }catch(e){} }
+  }catch(e){}
+}
+/* sistem menulis pesan keterangan ke kolom chat negosiasi */
+function barterSys(b, text){
+  try{
+    var c=barterChatOf(b); if(!c) return;
+    c.msgs=Array.isArray(c.msgs)?c.msgs:[];
+    c.msgs.push({sys:true,t:String(text||''),at:Date.now()});
+    c.last=String(text||'').slice(0,60); c.time='Baru saja';
+    try{ LS.set('mutari_chats',state.chats); }catch(e){}
+    try{ sbEnsureChat(c); }catch(e){}
+  }catch(e){}
+}
+/* ---------- notifikasi AWAL & AKHIR barter (kedua akun) ---------- */
+function bxNotifyStart(b){
+  try{
+    var peer=barterPeerEmail(b), inc=barterIsIncoming(b);
+    if(inc){
+      pushNotif('Penawaran barter masuk 💌',(b.fromName||'Seseorang')+' ingin menukar "'+(b.title||'barang')+'" dengan "'+(b.myTitle||'barang')+'".','barter');
+      if(peer && peer!==myEmail()) notifyUser(peer,'Penawaran barter terkirim','Menunggu respon pemilik barang.','barter');
+    }else{
+      if(peer && peer!==myEmail()) notifyUser(peer,'Penawaran barter masuk 💌',myName()+' ingin menukar "'+(b.title||'barang')+'". Segera setujui atau tolak.','barter');
+      pushNotif('Penawaran barter terkirim','Menunggu respon dari '+(b.owner||'pemilik barang')+'.','barter');
+    }
+  }catch(e){}
+}
+function bxNotifyEnd(b){
+  try{
+    var peer=barterPeerEmail(b);
+    if(peer && peer!==myEmail()) notifyUser(peer,'Barter selesai 🎉','Barter "'+(b.title||'barang')+'" selesai. Deposit dikembalikan. Beri ulasan untuk klaim bonus +30 MP.','barter');
+    pushNotif('Barter selesai 🎉','Barter "'+(b.title||'barang')+'" selesai. Deposit dikembalikan. Beri ulasan untuk klaim bonus.','barter');
+  }catch(e){}
+}
+/* ---------- deposit & asuransi ---------- */
+function ensureBarterDeposit(b){
+  try{
+    if(!b || !(b.status==='accepted'||b.status==='shipping'||b.status==='done')) return;
+    b.deposits=b.deposits||{};
+    var me=myEmail();
+    if(b.deposits[me]) return;
+    if(Number(state.points||0)<BARTER_DEPOSIT){ return; }
+    spendPoints(BARTER_DEPOSIT,'Deposit jaminan barter','🛡️');
+    b.deposits[me]=BARTER_DEPOSIT;
+    barterPatch(b,{deposits:b.deposits});
+  }catch(e){}
+}
+function refundBarterDeposit(b){
+  try{
+    b.deposits=b.deposits||{}; b.refunded=b.refunded||{};
+    var me=myEmail();
+    if(b.refunded[me]) return;
+    var amt=Number(b.deposits[me]||0)+Number((b.insurance&&b.insurance[me])||0);
+    b.refunded[me]=true;
+    if(amt>0){ try{ awardPoints(amt,'Deposit barter kembali','🔓'); }catch(e){} }
+    barterPatch(b,{refunded:b.refunded});
+  }catch(e){}
+}
+function bxChargeInsurance(b){
+  try{
+    var amt=Number(b.insAmount||INS_TIERS[0]); b.insurance=b.insurance||{};
+    var me=myEmail(); if(b.insurance[me]) return;
+    if(Number(state.points||0)<amt) return;
+    spendPoints(amt,'Asuransi premium barter','🛡️');
+    b.insurance[me]=amt;
+    barterPatch(b,{insurance:b.insurance});
+  }catch(e){}
+}
+function bxRewardSelf(b){
+  try{
+    b.rewarded=b.rewarded||{};
+    var me=myEmail(); if(b.rewarded[me]) return;
+    b.rewarded[me]=true;
+    awardPoints(BARTER_REWARD,'Barter selesai','🤝');
+    barterPatch(b,{rewarded:b.rewarded});
+  }catch(e){}
+}
+
+/* ---------- HALAMAN NEGOSIASI (satu untuk kedua peran) ---------- */
+function closeNego(){ var ov=document.getElementById('negoOv'); if(ov) ov.classList.remove('open'); state.negoId=null; }
+function negoRefresh(){
+  var id=state.negoId; if(!id) return;
+  var b=findBarterById(id); if(!b) return;
+  var ov=document.getElementById('negoOv'); if(!ov||!ov.classList.contains('open')) return;
+  var inp=document.getElementById('negoIn'); var keep=inp?inp.value:'';
+  var box=document.getElementById('negoMsgs'); var sc=box?box.scrollTop:0;
+  ov.innerHTML=negoHtml(b);
+  var inp2=document.getElementById('negoIn'); if(inp2) inp2.value=keep;
+  var box2=document.getElementById('negoMsgs'); if(box2 && !keep) box2.scrollTop=sc;
+  if(b.ship && b.ship.lat!=null){ try{ negMapInit(b); }catch(e){} }
+}
+function openBarterNegotiation(id){
+  var b=findBarterById(id); if(!b) return;
+  state.negoId=b.id;
+  if(!b.respondBy){ b.respondBy=barterRespondBy(b); }
+  try{ ensureBarterDeposit(b); }catch(e){}
+  try{ barterTick(); }catch(e){}
+  try{ closeSub(); }catch(e){}
+  var ov=document.getElementById('negoOv');
+  if(!ov){ ov=document.createElement('div'); ov.id='negoOv'; ov.className='overlay'; (document.getElementById('phone')||document.body).appendChild(ov); }
+  ov.innerHTML=negoHtml(b); ov.classList.add('open');
+  var box=document.getElementById('negoMsgs'); if(box) box.scrollTop=box.scrollHeight;
+  if(b.ship && b.ship.lat!=null){ setTimeout(function(){ try{ negMapInit(b); }catch(e){} },140); }
+}
+function bxItemThumb(it){
+  try{ if(it && it.photos && it.photos[0]) return '<img src="'+it.photos[0]+'" alt="">'; }catch(e){}
+  return ico(ICO.box);
+}
+function bxSwapSummary(b){
+  var myIt=null, thIt=null;
+  try{ myIt=findItem(barterIsIncoming(b)? b.myItemId : b.myItemId); }catch(e){}
+  try{ thIt=findItem(b.itemId); }catch(e){}
+  return '<div class="bx-swap">'+
+    '<div class="bx-swap-item"><div class="bx-swap-ph">'+bxItemThumb(myIt)+'</div><b>'+esc(barterMyTitle(b)||'Barangmu')+'</b><span>Barangmu</span></div>'+
+    '<div class="bx-swap-ic">⇄</div>'+
+    '<div class="bx-swap-item"><div class="bx-swap-ph alt">'+bxItemThumb(thIt)+'</div><b>'+esc(barterTheirTitle(b)||'Barang lawan')+'</b><span>Milik '+esc(barterPeerName(b))+'</span></div>'+
+  '</div>';
+}
+function bxStatusStrip(b){
+  var st=b.status||'pending', inc=barterIsIncoming(b);
+  if(st==='pending') return '';
+  if(st==='accepted') return '<div class="bx-strip ok"><div class="bx-strip-t"><b>✅ Diterima! Pilih metode pertukaran:</b><span>Jaminan '+BARTER_DEPOSIT+' MP sudah ditahan dari kedua pihak.</span></div></div>';
+  if(st==='shipping') return '<div class="bx-strip ok"><div class="bx-strip-t"><b>🤝 Metode tukar disepakati</b><span>Lanjutkan proses tukar barang, lalu konfirmasi jika sudah selesai.</span></div></div>';
+  if(st==='rejected') return '<div class="bx-strip bad"><div class="bx-strip-t"><b>Penawaran ditolak</b><span>Penawaran ini tidak dilanjutkan.</span></div></div>';
+  if(st==='cancelled') return '<div class="bx-strip bad"><div class="bx-strip-t"><b>Barter dibatalkan</b><span>Barter ini dibatalkan oleh salah satu pihak.</span></div></div>';
+  if(st==='expired') return '<div class="bx-strip bad"><div class="bx-strip-t"><b>Kedaluwarsa</b><span>Batas waktu respon sudah lewat.</span></div></div>';
+  return '';
+}
+function bxIncomingCard(b){
+  return '<div class="bx-inbox"><b>💌 Penawaran masuk</b><p>'+BARTER_DEPOSIT+' MP deposit jika diterima. Pelanggaran = poin hangus.</p>'+
+    '<div class="bx-inbox-act"><button class="ok" onclick="acceptBarter(\''+b.id+'\')">✓ Terima</button><button class="no" onclick="rejectBarter(\''+b.id+'\')">✕ Tolak</button></div></div>';
+}
+function bxCountdown(b){
+  var left=barterLeftMs(b);
+  return '<div class="bx-count">⏱️ Batas waktu respon: <span style="margin-left:auto">'+barterLeftLabel(left)+'</span></div>';
+}
+function bxDepositActive(b){
+  var mine=bxDepositAmt(b), peer=0;
+  try{ var pe=barterPeerEmail(b); peer=Number((b.deposits&&b.deposits[pe])||0); }catch(e){}
+  var ins=bxInsAmt(b);
+  var total=mine+peer+ins;
+  return '<div class="bx-dep"><span>🛡️ <b>Deposit Aktif</b> — '+locNum(mine)+'+'+locNum(peer)+' MP ditahan'+(ins?(' · asuransi '+locNum(ins)+' MP'):'')+'</span><b>'+locNum(total)+' MP</b></div>';
+}
+function bxMethodPicker(b){
+  return '<div class="bx-pick"><b>Diterima! Pilih metode pertukaran:</b><div class="bx-pick-btns">'+
+    '<button onclick="barterChooseMethod(\''+b.id+'\',\'cod\')"><span>📍</span> COD</button>'+
+    '<button onclick="barterChooseMethod(\''+b.id+'\',\'kirim\')"><span>🚚</span> Kirim</button>'+
+    '<button onclick="barterChooseMethod(\''+b.id+'\',\'insurance\')"><span>🛡️</span> Asuransi</button>'+
+  '</div></div>';
+}
+function bxMethodRow(b){
+  var m=b.method; if(!m) return '';
+  var me=String(myEmail()||'');
+  var byMe=String(b.methodBy||'')===me;
+  var label=b.methodName||(m==='cod'?'Titik Temu COD':(m==='kirim'?'Jasa Kirim':'Asuransi Premium'));
+  var ic = m==='cod'?'📍':(m==='kirim'?'🚚':'🛡️');
+  if(!b.methodApproved){
+    if(!byMe){
+      return '<div class="bx-mrow"><span class="bx-mrow-ic">'+ic+'</span><div class="bx-mrow-t"><b>'+esc(barterPeerName(b))+' mengusulkan: '+esc(label)+'</b><span>Menunggu persetujuanmu</span></div>'+
+        '<div class="bx-mrow-act"><button class="bx-mini ok" onclick="barterApproveMethod(\''+b.id+'\',true)">Terima</button><button class="bx-mini no" onclick="barterApproveMethod(\''+b.id+'\',false)">Tolak</button></div></div>';
+    }
+    return '<div class="bx-mrow"><span class="bx-mrow-ic">'+ic+'</span><div class="bx-mrow-t"><b>'+esc(label)+'</b><span>Menunggu persetujuan pihak lain…</span></div>'+
+      '<div class="bx-mrow-act"><button class="bx-mini" onclick="barterClearMethod(\''+b.id+'\')">Ubah</button></div></div>';
+  }
+  return '<div class="bx-mrow done"><span class="bx-mrow-ic ok">✓</span><div class="bx-mrow-t"><b>'+esc(label)+'</b><span>Disetujui kedua pihak</span></div>'+
+    (b.ship && b.ship.lat!=null ? '<div class="bx-mrow-act"><button class="bx-mini" onclick="bxOpenMap(\''+b.id+'\')">Peta</button></div>' : '')+'</div>';
+}
+function bxConfirmRow(b){
+  var conf=b.confirms||{}, me=myEmail(), peer=barterPeerEmail(b);
+  var iC=!!conf[me], pC=!!(peer && conf[peer]);
+  var turn = iC ? (pC?'Selesai!':'Menunggu…') : 'Giliran kamu!';
+  return '<div class="bx-cfrow">'+
+    '<span class="bx-cf'+(iC?' on':'')+'">'+(iC?'✓ ':'')+'Kamu</span>'+
+    '<span class="bx-cfarr">'+ico(ICO.chev)+'</span>'+
+    '<span class="bx-cf'+(pC?' on':'')+'">'+(pC?'✓ ':'')+esc(barterPeerName(b))+'</span>'+
+    '<span class="bx-cfturn">'+turn+'</span></div>';
+}
+function bxDoneBlock(b){
+  var me=myEmail(), rev=(b.reviews&&b.reviews[me])||null;
+  var html='<div class="bx-inbox" style="border-color:rgba(18,169,126,.45);background:rgba(18,169,126,.09)"><b>✅ 🎉 Barter Selesai!</b><p>Kedua pihak telah mengonfirmasi.</p></div>';
+  if(!rev){
+    html+='<div class="bx-wait"><b>⏳ +'+REVIEW_RELEASE+' MP menunggu rilis!</b><p>Kirim review untuk melepaskan bonus +'+REVIEW_RELEASE+' MP + '+REVIEW_WRITE+' MP bonus review. Batas waktu: <b>'+bxRevDeadlineText(b)+'</b>.</p></div>';
+    html+='<div class="bx-actions" style="padding:10px 0 0"><button class="primary" onclick="openReview(\''+b.id+'\')">☆ Review &amp; Klaim +'+(REVIEW_RELEASE+REVIEW_WRITE)+' Poin</button></div>';
+  }else{
+    html+='<div class="bx-strip ok"><div class="bx-strip-t"><b>Ulasan sudah dikirim</b><span>'+'★'.repeat(Number(rev.stars||5))+' · bonus '+REVIEW_RELEASE+' MP dirilis + '+REVIEW_WRITE+' MP menulis review.</span></div></div>';
+  }
+  html+='<div class="bx-dbtn"><button class="green" onclick="openCertificatePage(\''+b.id+'\')">📜 Sertifikat</button><button onclick="openEnvPage()">🌱 Dampak Hijau</button></div>';
+  return html;
+}
+function bxActions(b){
+  var st=b.status||'pending', inc=barterIsIncoming(b);
+  var out='';
+  if(st==='pending'){
+    if(inc){ /* tombol Terima/Tolak sudah ada di kartu penawaran masuk */ }
+    else { out='<button class="danger" onclick="cancelBarter(\''+b.id+'\')">✕ Batalkan Barter</button>'; }
+    return out?'<div class="bx-actions">'+out+'</div>':'';
+  }
+  if(st==='accepted'){
+    if(b.method) out='<button class="danger" onclick="cancelBarter(\''+b.id+'\')">✕ Batalkan Barter</button>';
+    else out='<button class="danger" onclick="cancelBarter(\''+b.id+'\')">✕ Batalkan Barter</button>';
+    return '<div class="bx-actions">'+out+'</div>';
+  }
+  if(st==='shipping'){
+    var conf=b.confirms||{}, me=myEmail(), peer=barterPeerEmail(b);
+    if(!conf[me]) out+='<button class="primary" onclick="openBarterConfirm(\''+b.id+'\')">✓ Selesaikan Barter</button>';
+    else if(peer && !conf[peer]) out+='<button class="primary" disabled style="opacity:.6">Menunggu konfirmasi pihak lain…</button>';
+    out+='<button class="danger" onclick="cancelBarter(\''+b.id+'\')">✕ Batalkan Barter</button>';
+    return '<div class="bx-actions">'+out+'</div>';
+  }
+  return '';
+}
+function negoHtml(b){
+  var st=b.status||'pending';
+  var c=barterChatOf(b);
+  var me=myEmail(), peer=barterPeerEmail(b);
+  var msgs=(c && c.msgs)||[];
+  var chatHtml=msgs.length
+    ? msgs.map(function(m){
+        if(m.sys) return '<div class="bx-msg sys">'+esc(m.t).replace(/\n/g,'<br>')+'</div>';
+        return '<div class="bx-msg '+(m.me?'me':'you')+'">'+esc(m.t||'')+'</div>';
+      }).join('')
+    : '<div class="muted" style="text-align:center;padding:18px">Belum ada pesan. Mulai negosiasi di sini.</div>';
+  var avTxt=esc(String(barterPeerName(b)||'?').charAt(0).toUpperCase());
+  var bodyHtml='<div class="bx-pad">'+
+      bxSwapSummary(b)+
+      bxStatusStrip(b)+
+      (st==='pending'? (bxCountdown(b)+'<div class="bx-hint">🛡️ Deposit: '+BARTER_DEPOSIT+' MP ditahan jika diterima. Pelanggaran = poin hangus.</div>'+(barterIsIncoming(b)?bxIncomingCard(b):'')) : '')+
+      ((st==='accepted'||st==='shipping'||st==='done')? bxDepositActive(b):'')+
+      ((st==='accepted' && !b.method)? bxMethodPicker(b):'')+
+      ((st==='accepted'||st==='shipping')? bxMethodRow(b):'')+
+      ((st==='shipping')? bxConfirmRow(b):'')+
+      (st==='done'? bxDoneBlock(b):'')+
+      ((b.ship && b.ship.lat!=null)? ('<div class="muted" style="margin-top:10px;font-size:11.5px">📍 '+(b.ship.poi||b.ship.place||'Titik temu')+'</div>') : '')+
+    '</div>'+
+    bxActions(b)+
+    '<div class="bx-chat">'+chatHtml+'</div>';
+  return '<div class="bx-head">'+
+      '<button class="icon-btn" onclick="closeNego()">'+ico(ICO.back)+'</button>'+
+      '<div class="bx-av">'+avTxt+'</div>'+
+      '<div class="bx-head-t"><b>'+esc(barterPeerName(b))+'</b><span>'+(st==='done'?'Barter selesai':(st==='pending'?'Menunggu respon':'Sedang berjalan'))+'</span></div>'+
+      barterStatusPill(st)+
+      '<button class="bx-flag" onclick="negoReport(\''+b.id+'\')" title="Laporkan">🚩</button>'+
+    '</div>'+
+    '<div class="nego-body" id="negoMsgs">'+bodyHtml+'</div>'+
+    '<div class="nego-foot"><input class="form-input" id="negoIn" placeholder="Tulis pesan negosiasi..."><button class="btn-primary" style="width:auto;margin:0;padding:0 16px" onclick="negoSend(\''+b.id+'\')">Kirim</button></div>';
+}
+function negoSend(id){
+  var el=document.getElementById('negoIn'); var v=(el && el.value || '').trim(); if(!v) return;
+  var b=findBarterById(id); if(!b) return;
+  var c=barterChatOf(b); if(!c) return;
+  c.msgs=Array.isArray(c.msgs)?c.msgs:[];
+  c.msgs.push({me:true,t:v,at:Date.now(),from:myName()});
+  c.last=v; c.time='Baru saja';
+  try{ LS.set('mutari_chats',state.chats); }catch(e){}
+  try{ sbEnsureChat(c); }catch(e){}
+  try{ sbPushChatMsg(c,v); }catch(e){}
+  var peer=barterPeerEmail(b);
+  try{ if(peer) sbPushChatMsg2(peer,v); }catch(e){}
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Pesan negosiasi barter',v,'chat'); }catch(e){} }
+  if(el) el.value='';
+  negoRefresh();
+}
+/* ---------- aksi status ---------- */
+function acceptBarter(id){
+  var b=findBarterById(id); if(!b) return;
+  b.status='accepted'; b.acceptedAt=Date.now();
+  bxTrail(b,'penawaran disetujui');
+  barterSys(b,'✅ Penawaran diterima! Silakan tentukan lokasi COD.');
+  barterSys(b,'🛡️ Jaminan '+BARTER_DEPOSIT+' poin ditahan dari kedua pihak sebagai asuransi barter.');
+  barterPatch(b,{status:'accepted',acceptedAt:b.acceptedAt});
+  try{ ensureBarterDeposit(b); }catch(e){}
+  var peer=barterPeerEmail(b);
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Penawaran barter disetujui ✅',myName()+' menyetujui penawaranmu. Tentukan metode pertukaran.','barter'); }catch(e){} }
+  try{ pushNotif('Penawaran disetujui ✅','Kamu menyetujui penawaran dari '+(b.fromName||'pengguna')+'.','barter'); }catch(e){}
+  openBarterNegotiation(b.id);
+  toast('Penawaran disetujui — pilih metode pertukaran');
+}
+function rejectBarter(id){
+  var b=findBarterById(id); if(!b) return;
+  b.status='rejected'; b.cancelledAt=Date.now(); b.cancelledBy=myEmail();
+  bxTrail(b,'penawaran ditolak');
+  barterPatch(b,{status:'rejected',cancelledAt:b.cancelledAt,cancelledBy:b.cancelledBy});
+  var peer=barterPeerEmail(b);
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Penawaran barter ditolak','Penawaran "'+(b.myTitle||b.title||'barang')+'" ditolak.','barter'); }catch(e){} }
+  try{ pushNotif('Penawaran ditolak','Kamu menolak penawaran dari '+(b.fromName||'pengguna')+'.','barter'); }catch(e){}
+  barterSys(b,'❌ Penawaran ditolak.');
+  openBarterNegotiation(b.id);
+  toast('Penawaran ditolak');
+}
+function cancelBarter(id){
+  var b=findBarterById(id); if(!b) return;
+  if(b.status==='done'||b.status==='rejected'||b.status==='cancelled'){ toast('Barter ini sudah selesai/dibatalkan'); return; }
+  if(!confirm('Batalkan barter ini?')) return;
+  b.status='cancelled'; b.cancelledAt=Date.now(); b.cancelledBy=myEmail();
+  bxTrail(b,'dibatalkan');
+  barterPatch(b,{status:'cancelled',cancelledAt:b.cancelledAt,cancelledBy:b.cancelledBy});
+  barterSys(b,'🚫 Barter dibatalkan oleh '+myName()+'.');
+  var peer=barterPeerEmail(b);
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Barter dibatalkan','Barter "'+(b.title||'barang')+'" dibatalkan.','barter'); }catch(e){} }
+  try{ pushNotif('Barter dibatalkan','Barter "'+(b.title||'barang')+'" telah dibatalkan.','barter'); }catch(e){}
+  closeNego(); try{ render(); }catch(e){}
+  toast('Barter dibatalkan');
+}
+/* ---------- metode pertukaran ---------- */
+function barterChooseMethod(id,m){
+  if(m==='cod') return bxCodSheet(id);
+  if(m==='kirim') return bxShipSheet(id);
+  return bxInsSheet(id);
+}
+function barterProposeMethod(id,m,name,amount){
+  var b=findBarterById(id); if(!b) return;
+  b.method=m; b.methodBy=myEmail(); b.methodApproved=false;
+  if(m==='insurance'){ b.insAmount=Number(amount||INS_TIERS[0]); b.methodName='Asuransi Premium '+b.insAmount+' MP'; }
+  else b.methodName=String(name|| (m==='cod'?'Titik Temu COD':'Jasa Kirim'));
+  var label=b.methodName;
+  bxTrail(b,'mengusulkan metode: '+label);
+  var sysTxt = (m==='cod' ? '📍 Kamu mengusulkan lokasi COD: '+label
+              : m==='kirim' ? '🚚 Kamu mengusulkan tukar barang via Jasa Kirim — 📦 Kurir: '+label
+              : '🛡️ Kamu mengusulkan Asuransi Premium ('+b.insAmount+' MP).');
+  barterSys(b,sysTxt+'\n⏳ Menunggu persetujuan pihak lain...');
+  barterPatch(b,{method:b.method,methodBy:b.methodBy,methodName:b.methodName,methodApproved:false,insAmount:b.insAmount});
+  var peer=barterPeerEmail(b);
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Usulan metode barter',label+' — menunggu persetujuanmu.','barter'); }catch(e){} }
+  closeSheet(); openBarterNegotiation(id);
+  toast('Usulan metode dikirim ke pihak lain');
+}
+function barterApproveMethod(id,ok){
+  var b=findBarterById(id); if(!b) return;
+  var label=b.methodName||'metode tukar';
+  if(!ok){
+    b.method=null; b.methodBy=''; b.methodName=''; b.methodApproved=false; b.insAmount=null;
+    bxTrail(b,'usulan metode ditolak');
+    barterPatch(b,{method:null,methodBy:'',methodName:'',methodApproved:false,insAmount:null});
+    barterSys(b,'❌ '+myName()+' menolak usulan metode. Silakan pilih metode lain.');
+    var pe=barterPeerEmail(b);
+    if(pe && pe!==myEmail()){ try{ notifyUser(pe,'Usulan metode ditolak','Pihak lain menolak usulan. Pilih metode lain.','barter'); }catch(e){} }
+    openBarterNegotiation(id); toast('Usulan ditolak — pilih metode lain');
+    return;
+  }
+  b.methodApproved=true; b.methodApprovedBy=myEmail();
+  if((b.status==='accepted')) b.status='shipping';
+  bxTrail(b,'metode disetujui');
+  if(b.method==='insurance'){ try{ bxChargeInsurance(b); }catch(e){} }
+  barterPatch(b,{method:b.method,methodApproved:true,methodApprovedBy:myEmail(),status:b.status,insurance:b.insurance});
+  barterSys(b,'✅ '+myName()+' menyetujui metode tukar barang: '+label+'\n🎯 Kedua pihak sudah sepakat! Silakan lanjutkan proses tukar barang, lalu tekan "Selesaikan Barter" jika sudah selesai.');
+  var peer=barterPeerEmail(b);
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Metode disetujui ✅','Kedua pihak sepakat: '+label+'. Lanjutkan tukar barang.','barter'); }catch(e){} }
+  try{ pushNotif('Metode disetujui ✅','Metode tukar "'+label+'" disetujui kedua pihak.','barter'); }catch(e){}
+  openBarterNegotiation(id);
+  toast('Metode disetujui — silakan lanjutkan tukar barang');
+}
+function barterClearMethod(id){
+  var b=findBarterById(id); if(!b) return;
+  b.method=null; b.methodBy=''; b.methodName=''; b.methodApproved=false; b.insAmount=null;
+  barterPatch(b,{method:null,methodBy:'',methodName:'',methodApproved:false,insAmount:null});
+  openBarterNegotiation(id);
+}
+/* --- COD --- */
+function bxCodSheet(id){
+  sheet('Atur Lokasi COD',
+    '<div class="muted" style="margin:10px">Pilih cara menentukan titik temu yang aman &amp; ramai.</div>'+
+    '<button class="bx-opt" onclick="bxCodAuto(\''+id+'\')"><span class="bx-opt-ic">⚡</span><div><b>Auto 1-Klik</b><span>Cari lokasi publik terdekat dari lokasi kamu</span></div></button>'+
+    '<button class="bx-opt" onclick="bxCodManual(\''+id+'\')"><span class="bx-opt-ic">✏️</span><div><b>Pilih Manual di Peta</b><span>Tulis atau pilih sendiri lokasi COD</span></div></button>'+
+    '<div class="bx-tips"><b>💡 Tips Keamanan COD</b><ul>'+
+      '<li>Pilih tempat ramai &amp; publik (mall, minimarket, kantor pos/polisi)</li>'+
+      '<li>Lakukan pada siang hari</li>'+
+      '<li>Periksa barang sebelum bertukar</li>'+
+      '<li>Jangan transfer uang di luar aplikasi</li>'+
+    '</ul></div>'+
+    '<button class="btn-ghost" style="margin-top:10px;width:100%" onclick="closeSheet()">Batal</button>');
+}
+function bxCodAuto(id){
+  var b=findBarterById(id); if(!b) return;
+  toast('Mencari lokasi…');
+  var done=function(place,lat,lng){
+    var name=place||'Titik Temu Aman';
+    showBarterShipMap(b,name,lat,lng);
+    barterProposeMethod(id,'cod',name);
+  };
+  try{
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(pos){
+        var lat=pos.coords.latitude, lng=pos.coords.longitude;
+        var name='Titik Temu Aman ('+lat.toFixed(4)+', '+lng.toFixed(4)+')';
+        try{
+          var pr=state.profile&&state.profile.method;
+          var addr=(state.profile&&(state.profile.display||''))||'';
+          if(addr) name='Titik Temu COD — '+addr;
+        }catch(e){}
+        done(name,lat,lng);
+      },function(){
+        var nm=(state.profile&&state.profile.display)||'Titik Temu COD';
+        done(nm,null,null);
+      },{timeout:9000,maximumAge:60000});
+    }else{
+      var nm2=(state.profile&&state.profile.display)||'Titik Temu COD';
+      done(nm2,null,null);
+    }
+  }catch(e){ done('Titik Temu COD',null,null); }
+}
+function bxCodManual(id){
+  var b=findBarterById(id); if(!b) return;
+  sheet('Lokasi COD Manual',
+    '<label class="form-label">Nama tempat / alamat titik temu</label>'+
+    '<input class="form-input" id="bxCodPlace" placeholder="Contoh: Kantor Kepala Desa Bakalan">'+
+    '<div class="bx-tips"><b>💡 Tips</b><ul><li>Sebutkan nama tempat yang jelas &amp; mudah ditemukan</li><li>Hindari tempat sepi</li></ul></div>'+
+    '<button class="btn-primary" style="margin-top:12px" onclick="bxCodManualSave(\''+id+'\')">Setuju &amp; Usulkan Lokasi Ini</button>'+
+    '<button class="btn-ghost" style="margin-top:8px;width:100%" onclick="closeSheet()">Batal</button>');
+}
+function bxCodManualSave(id){
+  var el=document.getElementById('bxCodPlace'); var v=(el&&el.value||'').trim();
+  if(v.length<4){ toast('Tulis nama lokasi dulu ya'); return; }
+  showBarterShipMap(findBarterById(id),v,null,null);
+  barterProposeMethod(id,'cod',v);
+}
+function showBarterShipMap(b,name,lat,lng){
+  try{
+    if(!b) return;
+    b.ship=b.ship||{};
+    b.ship.method='cod'; b.ship.place=name;
+    if(lat!=null){ b.ship.lat=lat; b.ship.lng=lng; b.ship.poi=name; }
+    else b.ship.place=name;
+    try{ LS.set('mutari_barters',state.barters); }catch(e){}
+    try{ barterPatch(b,{ship:b.ship}); }catch(e){}
+  }catch(e){}
+}
+function bxOpenMap(id){
+  var b=findBarterById(id); if(!b||!b.ship||b.ship.lat==null) return;
+  window.open('https://www.google.com/maps?q='+b.ship.lat+','+b.ship.lng,'_blank');
+}
+/* --- Jasa Kirim --- */
+function bxShipSheet(id){
+  sheet('Pilih Jasa Kirim',
+    '<div class="muted" style="margin:10px">Pilih kurir. Pihak lain harus menyetujui sebelum lanjut.</div>'+
+    '<div class="bx-couriers">'+COURIERS.map(function(c,i){ return '<button class="bx-cour" onclick="bxPickCourier(\''+id+'\','+i+')">'+esc(c)+'</button>'; }).join('')+'</div>'+
+    '<button class="btn-ghost" style="margin-top:12px;width:100%" onclick="closeSheet()">Batal</button>');
+}
+function bxPickCourier(id,i){
+  if(COURIERS[i]==='Lainnya') return bxCourierOther(id);
+  barterProposeMethod(id,'kirim',COURIERS[i]);
+}
+function bxCourierOther(id){
+  sheet('Jasa Kirim Lainnya',
+    '<label class="form-label">Nama jasa kirim</label><input class="form-input" id="bxCourName" placeholder="Contoh: Kurir komunitas">'+
+    '<button class="btn-primary" style="margin-top:12px" onclick="bxCourierOtherSave(\''+id+'\')">Usulkan Jasa Kirim</button>'+
+    '<button class="btn-ghost" style="margin-top:8px;width:100%" onclick="closeSheet()">Batal</button>');
+}
+function bxCourierOtherSave(id){
+  var el=document.getElementById('bxCourName'); var v=(el&&el.value||'').trim();
+  if(v.length<2){ toast('Tulis nama jasa kirim dulu'); return; }
+  barterProposeMethod(id,'kirim',v);
+}
+/* --- Asuransi Premium --- */
+function bxInsSheet(id){
+  state.bxInsAmt=INS_TIERS[0];
+  sheet('Item Guarantee Insurance',
+    '<div class="muted" style="margin:10px">Asuransi premium menahan poin tambahan dari KEDUA pihak. Pihak lain harus menyetujui sebelum aktif. Kedua pihak minimal '+INS_TIERS[0]+' MP.</div>'+
+    '<div class="bx-tiers">'+INS_TIERS.map(function(v,i){ return '<button class="bx-tier'+(i===0?' on':'')+'" id="bxTier'+i+'" onclick="bxInsPick('+i+','+v+')">'+v+' MP</button>'; }).join('')+'</div>'+
+    '<label class="form-label" style="margin-top:12px">Nominal lain</label>'+
+    '<input class="form-input" id="bxInsCustom" inputmode="numeric" placeholder="Minimal '+INS_TIERS[0]+' MP" oninput="bxInsCustom(this.value)">'+
+    '<div class="bx-sum" id="bxInsSum"></div>'+
+    '<button class="btn-primary" style="margin-top:12px" onclick="bxInsPropose(\''+id+'\')">Propose Insurance</button>'+
+    '<button class="btn-ghost" style="margin-top:8px;width:100%" onclick="closeSheet()">Batal</button>');
+  bxInsRefresh();
+}
+function bxInsPick(i,v){
+  state.bxInsAmt=v;
+  INS_TIERS.forEach(function(_,k){ var el=document.getElementById('bxTier'+k); if(el) el.className='bx-tier'+(k===i?' on':''); });
+  var c=document.getElementById('bxInsCustom'); if(c) c.value='';
+  bxInsRefresh();
+}
+function bxInsCustom(v){
+  var n=parseInt(String(v||'').replace(/[^0-9]/g,''),10)||0;
+  if(n>0) state.bxInsAmt=n;
+  INS_TIERS.forEach(function(_,k){ var el=document.getElementById('bxTier'+k); if(el) el.className='bx-tier'; });
+  bxInsRefresh();
+}
+function bxInsRefresh(){
+  var el=document.getElementById('bxInsSum'); if(!el) return;
+  var amt=Number(state.bxInsAmt||INS_TIERS[0]);
+  var mine=Number(state.points||0);
+  var ok=mine>=amt;
+  el.innerHTML='<div><span>Asuransi kamu</span><b>'+locNum(amt)+' MP</b></div>'+
+    '<div><span>Asuransi pihak lain</span><b>'+locNum(amt)+' MP</b></div>'+
+    '<div><span>Total jaminan premium</span><b>'+locNum(amt*2)+' MP</b></div>'+
+    (ok?'<div style="color:#1BC190"><span>Poin kamu</span><b>'+locNum(mine)+' MP · cukup</b></div>'
+       :'<div style="color:#EF4444"><span>Poin kamu</span><b>'+locNum(mine)+' MP · Tidak cukup (minimal '+locNum(amt)+')</b></div>');
+}
+function bxInsPropose(id){
+  var amt=Number(state.bxInsAmt||INS_TIERS[0]);
+  if(amt<INS_TIERS[0]){ toast('Minimal asuransi '+INS_TIERS[0]+' MP'); return; }
+  if(Number(state.points||0)<amt){ toast('Poin tidak cukup ('+locNum(state.points||0)+' MP)'); return; }
+  barterProposeMethod(id,'insurance','Asuransi Premium '+amt+' MP',amt);
+}
+/* ---------- KONFIRMASI SELESAI (foto bukti wajib) ---------- */
+function negoConfirm(id){ openBarterConfirm(id); }
+function openBarterConfirm(id){
+  var b=findBarterById(id); if(!b) return;
+  state.bxProof=state.bxProof||'';
+  var conf=b.confirms||{}, me=myEmail(), peer=barterPeerEmail(b);
+  var iC=!!conf[me], pC=!!(peer && conf[peer]);
+  var proof=state.bxProof;
+  var ready=!!(proof && String(proof).length>20);
+  sheet('Konfirmasi Barter Selesai',
+    '<div class="bx-cfbox"><b>Status Konfirmasi Kedua Pihak</b>'+
+      '<div class="bx-cfline"><span>Anda</span><b>'+(iC?'✓ sudah konfirmasi':'belum konfirmasi')+'</b></div>'+
+      '<div class="bx-cfline"><span>'+esc(barterPeerName(b))+'</span><b>'+(pC?'✓ sudah konfirmasi':'belum konfirmasi')+'</b></div>'+
+      '<div class="muted">→ Barter selesai ketika kedua pihak sudah konfirmasi.</div></div>'+
+    '<label class="form-label">Foto Bukti Serah Terima *</label>'+
+    '<div class="muted" style="margin:0 2px 8px">Upload foto bukti pengiriman (resi, paket) atau foto barang yang diterima. <b>Wajib</b> sebagai bukti sengketa.</div>'+
+    (proof?('<div class="bx-proof"><img src="'+proof+'" alt="bukti"><button class="bx-proof-x" onclick="bxProofClear(\''+id+'\')">×</button></div>'):'')+
+    '<label class="bx-upload">'+(proof?'Ganti Foto Bukti':'+ Tambah Foto Bukti')+
+      '<input type="file" accept="image/*" onchange="bxProofPick(event,\''+id+'\')" style="display:none"></label>'+
+    '<div class="bx-warn">⚠️ <b>Pastikan barter benar-benar selesai.</b> Dengan mengonfirmasi, Anda menyatakan bahwa pertukaran barang sudah terjadi dan sesuai deskripsi.</div>'+
+    '<label class="bx-check"><input type="checkbox" id="bxC1" '+(ready?'checked':'')+'> Barang sudah ditukar</label>'+
+    '<label class="bx-check"><input type="checkbox" id="bxC2" '+(ready?'checked':'')+'> Kondisi barang sesuai deskripsi</label>'+
+    '<label class="bx-check"><input type="checkbox" id="bxC3" disabled '+(ready?'checked':'')+'> Foto bukti serah terima sudah diupload</label>'+
+    '<div style="display:flex;gap:8px;margin-top:14px"><button class="btn-ghost" style="flex:1" onclick="closeSheet()">Batal</button>'+
+    '<button class="btn-primary" style="flex:1;margin:0" id="bxConfBtn" '+(ready?'':'disabled style="opacity:.55"')+' onclick="bxConfirmSubmit(\''+id+'\')">Konfirmasi Selesai</button></div>');
+}
+function bxProofPick(e,id){
+  var f=(e.target.files||[])[0]; if(!f) return;
+  compressImage(f,function(d){ state.bxProof=d; openBarterConfirm(id); });
+}
+function bxProofClear(id){ state.bxProof=''; openBarterConfirm(id); }
+function bxConfirmSubmit(id){
+  var b=findBarterById(id); if(!b) return;
+  if(!state.bxProof){ toast('Foto bukti wajib diupload dulu'); return; }
+  b.confirms=b.confirms||{}; b.confirmPhotos=b.confirmPhotos||{};
+  var me=myEmail();
+  if(b.confirms[me]){ closeSheet(); openBarterNegotiation(id); return; }
+  b.confirms[me]={at:Date.now()}; b.confirmPhotos[me]=state.bxProof;
+  bxTrail(b,'konfirmasi diterima');
+  var peer=barterPeerEmail(b);
+  var both=!!(peer && b.confirms[peer]);
+  if(both){ b.status='done'; b.doneTime=Date.now(); b.reviewDeadline=b.doneTime+7*24*3600*1000; bxTrail(b,'selesai'); }
+  barterPatch(b,{confirms:b.confirms,confirmPhotos:b.confirmPhotos,status:b.status,doneAt:b.doneTime,reviewDeadline:b.reviewDeadline});
+  barterSys(b,'✅ '+myName()+' telah mengonfirmasi barter selesai. '+(both?'🎉 Kedua pihak telah mengonfirmasi.':'Menunggu konfirmasi pihak lain...'));
+  if(peer && peer!==myEmail()){
+    try{ notifyUser(peer, both?'Barter selesai 🎉':'Konfirmasi barter menunggu', both?('Barter "'+(b.title||'barang')+'" selesai. Deposit dikembalikan.'):(myName()+' sudah konfirmasi. Giliran kamu.'),'barter'); }catch(e){}
+  }
+  closeSheet();
+  if(both){ finishBarter(b); } else { openBarterNegotiation(id); toast('Konfirmasi terkirim — menunggu pihak lain'); }
+}
+function finishBarter(b){
+  try{ bxRewardSelf(b); }catch(e){}
+  try{ refundBarterDeposit(b); }catch(e){}
+  try{ barterPatch(b,{status:'done',doneAt:b.doneTime||Date.now()}); }catch(e){}
+  var total=BARTER_REWARD+REVIEW_RELEASE+REVIEW_WRITE;
+  try{ barterSys(b,'🎉 Barter berhasil diselesaikan!\n💰 Masing-masing mendapat +'+BARTER_REWARD+' MP (langsung cair).\n⏳ +'+REVIEW_RELEASE+' MP lagi ditahan — berikan review untuk mencairkannya!\n📋 Total jika review diberikan: +'+total+' MP ('+BARTER_REWARD+' barter + '+REVIEW_RELEASE+' bonus review + '+REVIEW_WRITE+' menulis review).\n⚠️ Batas waktu review: '+bxRevDeadlineText(b)+' (7 hari). Setelah itu, '+REVIEW_RELEASE+' MP hangus.\n🛡️ Jaminan standar dikembalikan penuh.'); }catch(e){}
+  try{ bxNotifyEnd(b); }catch(e){}
+  try{ if($('#walletOv') && $('#walletOv').classList.contains('open')) walletRender(); }catch(e){}
+  try{ subRender(); }catch(e){}
+  try{ openBarterNegotiation(b.id); }catch(e){}
+}
+/* ---------- REVIEW / ULASAN ---------- */
+function reviewedBarter(id){
+  var b=findBarterById(id);
+  if(b && b.reviews && b.reviews[myEmail()]) return true;
+  return (act().reviews||[]).some(function(r){ return r.barterId===id; });
+}
+function openReview(barterId){
+  var b=findBarterById(barterId); if(!b) return;
+  if(reviewedBarter(barterId)){ toast('Kamu sudah memberi ulasan untuk barter ini'); return; }
+  state.reviewTarget=barterId; state.reviewStar=0; state.revChips=[];
+  sheet('Beri Ulasan',
+    '<div class="muted" style="margin:10px">Berikan penilaian jujur untuk <b>'+esc(barterPeerName(b))+'</b>. Ulasanmu membantu menjaga reputasi komunitas MUTARI.</div>'+
+    '<div style="text-align:center;font-weight:700;margin:14px 0 6px">Penilaian keseluruhan</div>'+
+    '<div class="bx-stars" id="bxStars">'+[1,2,3,4,5].map(function(n){ return '<button id="bxSt'+n+'" onclick="bxStar('+n+')">★</button>'; }).join('')+'</div>'+
+    '<label class="form-label" style="margin-top:16px">Apa yang paling menonjol?</label>'+
+    '<div class="bx-chips">'+REV_CHIPS.map(function(c,i){ return '<button class="bx-chip" id="bxCh'+i+'" onclick="bxChip('+i+')">'+c.e+' '+c.t+'</button>'; }).join('')+'</div>'+
+    '<label class="form-label" style="margin-top:16px">Komentar</label>'+
+    '<textarea class="form-input" id="bxRevText" rows="3" maxlength="500" placeholder="Ceritakan pengalamanmu barter dengan orang ini..." oninput="bxRevCount(this)"></textarea>'+
+    '<div class="muted" style="text-align:right;font-size:12px" id="bxRevCount">0/500</div>'+
+    '<div class="bx-info">⚖️ <b>Ulasan yang jujur dan adil</b><br>Ulasanmu bersifat permanen dan memengaruhi reputasi pengguna. Berikan penilaian berdasarkan pengalaman nyata. +'+REVIEW_WRITE+' poin untuk setiap ulasan.</div>'+
+    '<button class="btn-primary" style="margin-top:14px" onclick="submitReview()">Kirim Ulasan</button>');
+}
+function bxStar(n){
+  state.reviewStar=n;
+  [1,2,3,4,5].forEach(function(k){ var el=document.getElementById('bxSt'+k); if(el) el.className=(k<=n?'on':''); });
+}
+function bxChip(i){
+  state.revChips=state.revChips||[];
+  var j=state.revChips.indexOf(i);
+  if(j<0) state.revChips.push(i); else state.revChips.splice(j,1);
+  var el=document.getElementById('bxCh'+i); if(el) el.classList.toggle('on', j<0);
+}
+function bxRevCount(el){ var c=document.getElementById('bxRevCount'); if(c) c.textContent=String((el&&el.value||'').length)+'/500'; }
+function submitReview(){
+  var id=state.reviewTarget, b=findBarterById(id); if(!b) return;
+  if(reviewedBarter(id)){ closeSheet(); toast('Kamu sudah memberi ulasan'); return; }
+  var stars=Math.max(1,Math.min(5,state.reviewStar||5));
+  var text=(($('#bxRevText')||{}).value||'').trim();
+  var chips=(state.revChips||[]).map(function(i){ return REV_CHIPS[i]?REV_CHIPS[i].t:''; }).filter(Boolean);
+  b.reviews=b.reviews||{};
+  b.reviews[myEmail()]={stars:stars,text:text,chips:chips,at:Date.now()};
+  b.reviewReleased=b.reviewReleased||{};
+  bxTrail(b,'memberi ulasan');
+  var firstRelease=!b.reviewReleased[myEmail()];
+  b.reviewReleased[myEmail()]=true;
+  barterPatch(b,{reviews:b.reviews,reviewReleased:b.reviewReleased});
+  try{ barterSys(b,'★'.repeat(stars)+' Review diberikan: "'+(text||'—')+'"\n✅ +'+REVIEW_RELEASE+' MP bonus dicairkan +'+REVIEW_WRITE+' MP menulis review = +'+(REVIEW_RELEASE+REVIEW_WRITE)+' MP total'); }catch(e){}
+  try{ awardPoints(REVIEW_WRITE,'Menulis ulasan','⭐'); }catch(e){}
+  if(firstRelease){ try{ awardPoints(REVIEW_RELEASE,'Bonus review barter','🎁'); }catch(e){} }
+  var a=act(); a.reviews.unshift({barterId:id,by:barterPeerName(b),rating:stars,text:text,time:Date.now()}); saveAct();
+  try{ sbPushReview(b,b.reviews[myEmail()]); }catch(e){}
+  var peer=barterPeerEmail(b);
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Ulasan baru ⭐',myName()+' memberi ulasan '+stars+' bintang untuk barter kalian.','social'); }catch(e){} }
+  closeSheet(); openBarterNegotiation(id);
+  toast('Review terkirim! +'+(REVIEW_RELEASE+REVIEW_WRITE)+' poin dirilis ('+REVIEW_RELEASE+' bonus barter + '+REVIEW_WRITE+' review)');
+}
+/* ---------- SERTIFIKAT ---------- */
+function showBarterCertificate(b){ if(b && b.id) openCertificatePage(b.id); }
+function openCertificatePage(id){
+  var b=findBarterById(id); if(!b){ toast('Data barter tidak ditemukan'); return; }
+  var code=bxCertCode(b);
+  var done=b.status==='done';
+  var me=myEmail(), meN=myName(), peN=barterPeerName(b);
+  var myT=barterMyTitle(b)||'Barang A', thT=barterTheirTitle(b)||'Barang B';
+  var n=barterDoneCount()||1;
+  var co2=(n*3.2).toFixed(1), air=n*7, pohon=(n*0.15).toFixed(1);
+  var ov=document.getElementById('certOv');
+  if(!ov){ ov=document.createElement('div'); ov.id='certOv'; ov.className='overlay'; (document.getElementById('phone')||document.body).appendChild(ov); }
+  ov.innerHTML='<div class="bx-head"><button class="icon-btn" onclick="document.getElementById(\'certOv\').classList.remove(\'open\')">'+ico(ICO.back)+'</button><b style="font-size:15px">Sertifikat Barter</b></div>'+
+    '<div class="nego-body">'+
+      '<div class="bx-cert">'+
+        '<div class="bx-cert-top"><span class="bx-cert-logo">🍃 MUTARI</span><h2>Sertifikat Barter</h2><div class="no">'+esc(code)+'</div></div>'+
+        '<div class="bx-cparties">'+
+          '<div class="bx-cparty"><div class="av">'+esc(String(meN||'?').charAt(0).toUpperCase())+'</div><b>'+esc(meN)+'</b></div>'+
+          '<div class="bx-cmid"><div class="h">🤝</div><span>BARTER</span></div>'+
+          '<div class="bx-cparty"><div class="av">'+esc(String(peN||'?').charAt(0).toUpperCase())+'</div><b>'+esc(peN)+'</b></div>'+
+        '</div>'+
+        '<div class="bx-citems">'+
+          '<div class="bx-citem"><div class="ph">'+ico(ICO.box)+'</div><b>'+esc(myT)+'</b><i>Barangmu</i></div>'+
+          '<div class="bx-citem-x">⇄</div>'+
+          '<div class="bx-citem"><div class="ph">'+ico(ICO.box)+'</div><b>'+esc(thT)+'</b><i>Milik '+esc(peN)+'</i></div>'+
+        '</div>'+
+        '<div class="bx-cenv"><h4>🌿 Dampak Lingkungan</h4><div class="g"><div><b>2</b><span>Barang diselamatkan</span></div><div><b>~'+co2+' kg</b><span>CO₂ dihemat</span></div></div></div>'+
+        '<div class="bx-cmeta"><div><span>Tanggal Selesai</span><b>'+new Date(b.doneTime||Date.now()).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})+'</b></div><div style="text-align:right"><span>Barter ke-</span><b>#'+n+'</b></div></div>'+
+        '<div class="bx-slogan">Barang Berputar, Manfaat Berlanjut 🌱</div>'+
+      '</div>'+
+      '<div style="padding:0 12px 20px"><button class="btn-primary" style="width:100%" onclick="bxShareCert(\''+esc(code)+'\')">🔗 Bagikan ke Sosmed</button>'+
+      '<button class="btn-ghost" style="margin-top:8px;width:100%" onclick="openEnvPage()">🌱 Lihat Dampak Lingkungan</button></div>'+
+    '</div>';
+  ov.classList.add('open');
+}
+function bxShareCert(code){
+  var txt='Saya baru saja menyelesaikan barter di MUTARI '+code+'! Barang Berputar, Manfaat Berlanjut 🌱';
+  try{
+    if(navigator.share){ navigator.share({title:'Sertifikat Barter MUTARI',text:txt}).catch(function(){}); return; }
+  }catch(e){}
+  try{ navigator.clipboard.writeText(txt); toast('Sertifikat disalin — tempel di sosial mediamu'); }catch(e){ toast(txt); }
+}
+/* ---------- DAMPAK LINGKUNGAN ---------- */
+function openEnvPage(){
+  var n=barterDoneCount();
+  var co2=(n*3.2).toFixed(1), co2i=Math.round(n*3.2), air=n*7, pohon=(n*0.15).toFixed(1);
+  var MILE=[
+    {e:'🌱',t:'Barter Pertama',d:'1 barter selesai',g:1},
+    {e:'🍃',t:'Eco Warrior',d:'5 barter selesai',g:5},
+    {e:'🌍',t:'Planet Saver',d:'10 barter selesai',g:10},
+    {e:'🏆',t:'Green Champion',d:'25 barter selesai',g:25},
+    {e:'🛡️',t:'Earth Guardian',d:'50 barter selesai',g:50},
+    {e:'👑',t:'Eco Legend',d:'100 barter selesai',g:100}
+  ];
+  var ov=document.getElementById('envOv');
+  if(!ov){ ov=document.createElement('div'); ov.id='envOv'; ov.className='overlay'; (document.getElementById('phone')||document.body).appendChild(ov); }
+  ov.innerHTML='<div class="bx-head"><button class="icon-btn" onclick="document.getElementById(\'envOv\').classList.remove(\'open\')">'+ico(ICO.back)+'</button><b style="font-size:15px">🌿 Dampak Lingkungan</b></div>'+
+    '<div class="nego-body">'+
+      '<div class="bx-env-hero"><div class="globe">🌍</div><h2>Kamu sudah menyelamatkan '+n+' barang dari sampah!</h2><p>Terima kasih atas kontribusimu untuk bumi 💚</p>'+
+        '<div class="g"><div><b>'+n+'</b><span>Barang Diselamatkan</span></div><div><b>'+co2i+' kg</b><span>CO₂ Dihemat</span></div><div><b>'+pohon+'</b><span>Setara Pohon</span></div></div></div>'+
+      '<div class="bx-env-grid" style="margin-top:12px">'+
+        '<div class="bx-env-card"><div class="e">♻️</div><b>'+n+'</b><h4>Barang Diselamatkan</h4><p>Barang yang tidak jadi sampah berkat barter</p></div>'+
+        '<div class="bx-env-card"><div class="e">🌿</div><b>'+co2i+' kg</b><h4>CO₂ Dihemat</h4><p>Emisi karbon yang berhasil dicegah</p></div>'+
+        '<div class="bx-env-card"><div class="e">💧</div><b>'+air+' L</b><h4>Air Dihemat</h4><p>Air yang dihemat dari produksi baru</p></div>'+
+        '<div class="bx-env-card"><div class="e">🌲</div><b>'+pohon+'</b><h4>Setara Pohon/Tahun</h4><p>Setara penyerapan CO₂ pohon per tahun</p></div>'+
+      '</div>'+
+      '<div class="bx-mile"><h4>🏅 Milestone Lingkungan</h4>'+MILE.map(function(m){
+        var on=n>=m.g;
+        return '<div class="bx-mile-item'+(on?' on':'')+'"><span class="e">'+m.e+'</span><div class="t"><b>'+m.t+'</b><span>'+m.d+'</span></div><span class="p">'+(on?'✓':(n+'/'+m.g))+'</span></div>';
+      }).join('')+'</div>'+
+      '<div style="padding:0 12px 22px"><button class="btn-primary" style="width:100%" onclick="document.getElementById(\'envOv\').classList.remove(\'open\');setRoute(\'barang\')">🌱 Mulai Barter Lagi →</button></div>'+
+    '</div>';
+  ov.classList.add('open');
+}
+/* ---------- TAB BARTER (daftar barter kedua peran) ---------- */
+function barterView(){
+  var bars=(state.barters||[]).slice();
+  function card(b){
+    var st=b.status||'pending';
+    var left=barterLeftMs(b);
+    var needInc=(st==='pending'&&barterIsIncoming(b));
+    var sub='';
+    if(st==='pending') sub=(needInc?'Perlu respon kamu':'Menunggu respon')+' · '+barterLeftLabel(left);
+    else if(st==='accepted') sub='Diterima · pilih metode pertukaran';
+    else if(st==='shipping') sub='Sedang berjalan · selesaikan barter';
+    else if(st==='done') sub='Selesai'+(b.reviews&&b.reviews[myEmail()]?' · sudah diulas':' · beri ulasan');
+    else sub=barterStatusInfo(st).label;
+    return '<button class="bx-home-card" style="margin:0 0 9px;width:100%" onclick="openBarterNegotiation(\''+b.id+'\')">'+
+      '<div class="r1">'+(st==='done'?'✅':(needInc?'⏳':'🤝'))+' '+esc(barterStatusInfo(st).label)+'</div>'+
+      '<div class="th"><div>'+ico(ICO.box)+'</div><span class="x">⇄</span><div>'+ico(ICO.box)+'</div>'+
+        '<div class="nm"><b>'+esc(barterPeerName(b))+'</b><span>'+esc((b.title||'barang')+' ↔ '+(b.myTitle||'barang'))+'</span></div></div>'+
+      '<div class="cta" style="background:'+(needInc?'#E9A93D':'rgba(255,255,255,.07)')+';color:'+(needInc?'#1A1206':'var(--text)')+'">'+esc(sub)+'</div></button>';
+  }
+  var incoming=bars.filter(function(b){ return b.status==='pending'&&barterIsIncoming(b); });
+  var active=bars.filter(function(b){ return b.status==='accepted'||b.status==='shipping'; });
+  var pendingOut=bars.filter(function(b){ return b.status==='pending'&&!barterIsIncoming(b); });
+  var done=bars.filter(function(b){ return b.status==='done'; });
+  var mine=myItems();
+  function sec(t,arr){ return arr.length?('<div class="sec-h" style="margin:14px 4px 8px;font-weight:800;font-size:13.5px">'+t+'</div>'+arr.map(card).join('')):''; }
+  return '<div class="sp" style="padding:6px">'+
+    '<div class="card" style="background:linear-gradient(150deg,rgba(18,169,126,.16),rgba(18,169,126,.04))"><b style="font-size:15px">Ajukan Barter</b><p class="muted" style="margin:6px;line-height:1.5">Pilih barangmu sebagai penawaran, lalu ajukan ke barang milik pengguna lain di pasar.</p><button class="btn-primary" style="margin:14px" onclick="setRoute(\'barang\')">Jelajahi Barang di Pasar</button><button class="btn-ghost" style="margin-top:10px" onclick="openUpload()">+ Tawarkan Barang Baru</button></div>'+
+    (bars.length?(sec('💌 Perlu Respon Kamu',incoming)+sec('🚀 Barter Aktif',active)+sec('⏳ Menunggu Respon',pendingOut)+sec('✅ Selesai',done)):'')+
+    '<div class="sec-h" style="margin:14px 4px 8px;font-weight:800;font-size:13.5px">Aset yang Bisa Kamu Tukar</div>'+
+    (mine.length? '<div class="grid">'+mine.map(function(i){ return itemCard(i); }).join('')+'</div>' : '<div class="empty sm" style="padding:30px">Belum ada barang untuk dibarter</div>')+
+    '<div style="height:18px"></div></div>';
+}
+/* ---------- KARTU BERANDA "Barter Hampir Selesai" ---------- */
+function bxNeedsResponseBarter(){
+  var list=(state.barters||[]).filter(function(b){ return b.status==='pending'&&barterIsIncoming(b); });
+  list.sort(function(a,b){ return barterLeftMs(a)-barterLeftMs(b); });
+  return list[0]||null;
+}
+function bxInjectHomeCard(){
+  try{
+    if(state.route!=='home') return;
+    var main=document.getElementById('appMain'); if(!main) return;
+    var old=main.querySelector('.bx-home-card'); if(old) old.parentNode.removeChild(old);
+    var b=bxNeedsResponseBarter(); if(!b) return;
+    var el=document.createElement('button');
+    el.className='bx-home-card';
+    el.innerHTML='<div class="r1">⏳ Barter Hampir Selesai · butuh respon kamu</div>'+
+      '<div class="th"><div>'+ico(ICO.box)+'</div><span class="x">⇄</span><div>'+ico(ICO.box)+'</div>'+
+        '<div class="nm"><b>'+esc(barterPeerName(b))+'</b><span>'+esc((b.title||'barang')+' ↔ '+(b.myTitle||'barang'))+' · '+barterLeftLabel(barterLeftMs(b))+'</span></div></div>'+
+      '<div class="cta">Perlu respon kamu</div>';
+    el.onclick=function(){ openBarterNegotiation(b.id); };
+    main.insertBefore(el, main.firstChild);
+  }catch(e){}
+}
+/* ---------- PENJAGA SINKRON: hadiah, jaminan, notifikasi ---------- */
+function barterTick(){
+  try{
+    var me=myEmail();
+    (state.barters||[]).forEach(function(b){
+      if(!b) return;
+      if(b.status==='pending' && !b.notifiedStart){ b.notifiedStart=true; bxNotifyStart(b); barterPatch(b,{notifiedStart:true}); }
+      if(b.status==='accepted'||b.status==='shipping'||b.status==='done'){ ensureBarterDeposit(b); }
+      if(b.status==='rejected'||b.status==='cancelled'||b.status==='expired'){ refundBarterDeposit(b); }
+      if(b.status==='done'){
+        if(!(b.rewarded&&b.rewarded[me])) bxRewardSelf(b);
+        if(!(b.refunded&&b.refunded[me])) refundBarterDeposit(b);
+        if(!b.notifiedEnd){ b.notifiedEnd=true; bxNotifyEnd(b); barterPatch(b,{notifiedEnd:true}); }
+      }
+      if(b.methodApproved && b.method==='insurance' && !(b.insurance&&b.insurance[me])) bxChargeInsurance(b);
+    });
+  }catch(e){}
+}
+setInterval(function(){ try{ barterTick(); }catch(e){} try{ bxInjectHomeCard(); }catch(e){} }, 7000);
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ try{ barterTick(); }catch(e){} });
+
+
+/* ===== v1.10.0 — SINKRONISASI BARTER DIPERLUAS (kedua akun) ===== */
+function sbPushBarter(b){
+  if(!sbOnline()||!b) return null;
+  try{
+    var now=Date.now();
+    var ownerEmail=String(b.ownerEmail||'').toLowerCase();
+    var doc={
+      title:String(b.title||''), owner:String(b.owner||''), ownerUid:String(b.ownerId||''),
+      ownerEmail:ownerEmail, ownerKey:userKeyOf(ownerEmail),
+      fromUid:sbUid(), fromName:myName(), fromEmail:myEmail(),
+      myTitle:String(b.myTitle||''), myItemId:String(b.myItemId||''), itemId:String(b.itemId||''),
+      targetValue:Number(b.targetValue||0), myValue:Number(b.myValue||0), bonus:Number(b.bonus||0),
+      status:String(b.status||'pending'), createdAt:Number(b.time||now), updatedAt:now,
+      respondBy:Number(b.respondBy||0),
+      method:String(b.method||''), methodBy:String(b.methodBy||''), methodName:String(b.methodName||''),
+      methodApproved:!!b.methodApproved, methodApprovedBy:String(b.methodApprovedBy||''),
+      insAmount:Number(b.insAmount||0),
+      deposits:b.deposits||{}, insurance:b.insurance||{}, confirms:b.confirms||{}, confirmPhotos:b.confirmPhotos||{},
+      reviews:b.reviews||{}, rewarded:b.rewarded||{}, refunded:b.refunded||{}, reviewReleased:b.reviewReleased||{},
+      ship:b.ship||null,
+      trail:(Array.isArray(b.trail)&&b.trail.length)?b.trail:[{t:'diajukan',at:now,by:myEmail()}]
+    };
+    b.trail=doc.trail;
+    var p=sbAdd('barters',doc);
+    if(p&&p.then) p.then(function(ref){ b.cloudId=ref.id; try{ LS.set('mutari_barters',state.barters); }catch(e){} }).catch(function(){});
+    return p;
+  }catch(e){ return null; }
+}
+function sbListenBarters(){
+  const db=sbDb(); if(!db) return;
+  const apply=function(snap){
+    var changed=false, incomingNew=null;
+    snap.forEach(function(x){
+      var v=x.data()||{}, b=(state.barters||[]).find(function(y){ return y && (y.cloudId===x.id); });
+      if(!b){
+        var oe=String(v.ownerEmail||'').toLowerCase(), ok=String(v.ownerKey||''), oid=String(v.ownerId||'').toLowerCase();
+        var mine=(oe && oe===myEmail()) || (ok && ok===userKeyOf(myEmail())) || (oid && oid===myEmail());
+        if(mine){
+          b={id:'brc'+x.id, cloudId:x.id, itemId:String(v.itemId||''), title:String(v.title||''),
+             owner:String(v.owner||''), ownerId:String(v.ownerUid||''), ownerEmail:(oe||myEmail()),
+             ownerKey:(ok||userKeyOf(oe||myEmail())),
+             myItemId:String(v.myItemId||''), myTitle:String(v.myTitle||''),
+             targetValue:Number(v.targetValue||0), myValue:Number(v.myValue||0), bonus:Number(v.bonus||0),
+             status:String(v.status||'pending'),
+             time:Number(v.createdAt||Date.now()), incoming:true,
+             fromName:String(v.fromName||''), fromEmail:String(v.fromEmail||''),
+             respondBy:Number(v.respondBy||0),
+             deposits:v.deposits||{}, insurance:v.insurance||{}, confirms:v.confirms||{}, confirmPhotos:v.confirmPhotos||{},
+             reviews:v.reviews||{}, rewarded:v.rewarded||{}, refunded:v.refunded||{}, reviewReleased:v.reviewReleased||{},
+             method:String(v.method||''), methodBy:String(v.methodBy||''), methodName:String(v.methodName||''),
+             methodApproved:!!v.methodApproved, methodApprovedBy:String(v.methodApprovedBy||''), insAmount:Number(v.insAmount||0),
+             ship:v.ship||null, trail:(Array.isArray(v.trail)?v.trail:[])};
+          state.barters=Array.isArray(state.barters)?state.barters:[];
+          state.barters.unshift(b); changed=true; incomingNew=b;
+        }
+        return;
+      }
+      if(v.status && b.status!==v.status){ b.status=v.status; changed=true; }
+      if(v.respondBy) b.respondBy=Number(v.respondBy);
+      if(v.method!==undefined){ b.method=String(v.method||''); }
+      if(v.methodBy!==undefined) b.methodBy=String(v.methodBy||'');
+      if(v.methodName!==undefined) b.methodName=String(v.methodName||'');
+      if(v.methodApproved!==undefined) b.methodApproved=!!v.methodApproved;
+      if(v.methodApprovedBy!==undefined) b.methodApprovedBy=String(v.methodApprovedBy||'');
+      if(v.insAmount!==undefined) b.insAmount=Number(v.insAmount||0);
+      if(v.deposits) b.deposits=v.deposits;
+      if(v.insurance) b.insurance=v.insurance;
+      if(v.confirms) b.confirms=v.confirms;
+      if(v.confirmPhotos) b.confirmPhotos=v.confirmPhotos;
+      if(v.reviews) b.reviews=v.reviews;
+      if(v.rewarded) b.rewarded=v.rewarded;
+      if(v.refunded) b.refunded=v.refunded;
+      if(v.reviewReleased) b.reviewReleased=v.reviewReleased;
+      if(v.ship) b.ship=v.ship;
+      if(Array.isArray(v.trail)) b.trail=v.trail;
+      if(v.doneAt) b.doneTime=Number(v.doneAt);
+      changed=true;
+    });
+    if(changed){
+      try{ LS.set('mutari_barters',state.barters); }catch(e){}
+      try{ if(state.route==='akun'||state.route==='barter') render(); }catch(e){}
+      try{ negoRefresh(); }catch(e){}
+      try{ barterTick(); }catch(e){}
+      if(incomingNew){ try{ bxNotifyStart(incomingNew); }catch(e){} }
+    }
+  };
+  try{ if(state.sbBarterUnsub) state.sbBarterUnsub(); }catch(e){}
+  try{ if(state.sbBarterUnsub2) state.sbBarterUnsub2(); }catch(e){}
+  try{ if(state.sbBarterUnsub3) state.sbBarterUnsub3(); }catch(e){}
+  try{ state.sbBarterUnsub=db.collection('barters').where('fromUid','==',sbUid()).limit(200).onSnapshot(apply, function(){}); }catch(e){}
+  try{ state.sbBarterUnsub2=db.collection('barters').where('ownerEmail','==',myEmail()).limit(200).onSnapshot(apply, function(){}); }catch(e){}
+  try{ state.sbBarterUnsub3=db.collection('barters').where('ownerKey','==',userKeyOf(myEmail())).limit(200).onSnapshot(apply, function(){}); }catch(e){}
+}
+
 
 /* =================== INIT =================== */
 (function(){ try{ socialMigrateComments(); }catch(e){} try{ migrateNotifLog(); }catch(e){} try{ checkTierUp(); }catch(e){} upgradeLegacyPasswords(); applyTheme(); if(typeof renderAccountList==='function') try{renderAccountList();}catch(e){} var av=$('#authVer'); if(av){ av.textContent='MUTARI v'+APP_VERSION+' · Build '+APP_BUILD;
