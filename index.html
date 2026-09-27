@@ -2,8 +2,8 @@
 <!--
   MUTARI — Barter & Marketplace
   ==============================
-  Versi   : 1.10.1
-  Build   : 108
+  Versi   : 1.10.5
+  Build   : 112
   Berkas  : index.html (GitHub) · mutari-app-v1.9.78.html (uji langsung)
   Logo    : TERTANAM inline (base64) di dalam berkas ini — JANGAN dihapus.
   Tema    : hanya GELAP (fitur mode terang sudah dihapus).
@@ -60,7 +60,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="MUTARI">
 <meta name="description" content="MUTARI — Barter &amp; Marketplace. Ajak tukar barang, COD aman dengan titik temu, poin MP, komunitas barter, dan perlindungan transaksi.">
-<title>MUTARI — Barter &amp; Marketplace · v1.10.1</title>
+<title>MUTARI — Barter &amp; Marketplace · v1.10.5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2050,15 +2050,19 @@ const state = {
   timer: null
 };
 
-const APP_VERSION = '1.10.1';
-const APP_BUILD = 108;
+const APP_VERSION = '1.10.5';
+const APP_BUILD = 112;
 const ACCOUNT_HISTORY_MAX=1;   /* v1.9.70: halaman login hanya menampilkan akun terakhir dipakai */
 /* OAuth Client ID (Web) untuk login Google sungguhan. Kosongkan untuk memakai form email.
    Bisa juga diatur dari Pengaturan -> Google Client ID (tersimpan lokal). */
 const GOOGLE_CLIENT_ID = '';
 const CHANGELOG = [
-  ['1.10.1','PENAWARAN BARTER PASTI SAMPAI KE PEMILIK + NOTIFIKASI DUA AKUN. (1) Email pemilik barang dicari BERLAPIS: ownerEmail, lalu ownerId/ownerUid, lalu UID->email dari daftar pengguna cloud, lalu cocok nama akun — jadi penawaran tidak lagi gagal karena email pemilik kosong. (2) KOTAK KIRIM (outbox): penawaran dan notifikasi yang gagal terkirim (mis. cloud belum siap / offline) disimpan dan dikirim ulang otomatis saat cloud tersambung, jadi tidak hilang. (3) Pendengar barter sisi pemilik diperluas: cocok lewat ownerEmail ATAU ownerKey ATAU ownerId ATAU ownerUid (UID perangkat pemilik) ATAU itemId barang miliknya, sehingga penawaran selalu muncul di akun pemilik. (4) Pendengar dinyalakan ulang otomatis bila belum aktif saat cloud siap. (5) Notifikasi AWAL (Penawaran barter masuk) dan AKHIR (Barter selesai) dipastikan terkirim ke KEDUA akun. PENTING: wajib publish ulang Rules Firestore.'],
-  ['1.10.0','ALUR BARTER PENUH: SATU HALAMAN UNTUK KEDUA PIHAK. Deposit jaminan 20 MP + batas respon 72 jam, metode COD/Jasa Kirim/Asuransi Premium (60-200 MP) yang harus disetujui dua pihak, konfirmasi wajib foto bukti, selesai +30 MP, review +20/+10 MP, Sertifikat Barter, dan halaman Dampak Lingkungan. Semua tersinkron ke Firestore.'],
+  ['1.10.5','TIGA PERBAIKAN ATURAN. (1) Pelanggaran "Bukti Palsu / Penipuan -50 MP" tetap sesuai draf; bila saldo pengguna lebih kecil, penalti tetap dipotong sampai DOMPET 0 MP (saldo tidak pernah minus) - berlaku juga untuk semua penalti lain & hapus barang. (2) Bonus milestone barter 10x/50x/100x kini BENAR-BENAR diberikan (+75/+150/+300 MP) sekali per milestone, sesuai daftar di halaman Pencapaian (sebelumnya hanya tampilan). (3) Penalti tambahan -20 MP + laporan otomatis ke admin bila menghapus barang >= 3 kali dalam 1 jam (catatan penting dokumen bagian 8); dicatat di Pengurangan Poin.'],
+  ['1.10.4','POIN BARTER DISESUAIKAN DOKUMEN RESMI v1.0: jaminan 20 MP (dipotong saat mengajukan & saat menerima), bonus barter selesai +30 MP, tolak = jaminan kembali, batal setelah diterima = jaminan hangus jadi kompensasi, asuransi refund 97%, kedaluwarsa 48 jam, net +60 MP.'],
+  ['1.10.3','Kunci peta barter aman (refund jaminan hanya sekali).'],
+  ['1.10.2','Kepemilikan berbasis akun + peringatan sinkronisasi diperbaiki.'],
+  ['1.10.1','Penawaran pasti sampai ke pemilik + notifikasi dua akun.'],
+  ['1.10.0','Alur barter penuh: satu halaman dua peran, metode COD/Kirim/Asuransi, konfirmasi wajib foto, sertifikat & dampak lingkungan.'],
   ['1.9.78','PERBAIKAN BARTER: CHAT LAWAN & TOMBOL SETUJUI/TOLAK. (1) Penawaran barter kini selalu membawa email pemilik yang benar. Sebelumnya, untuk barang milik akun lain atau barang dari cloud, field ownerEmail kosong sehingga: penawaran TIDAK pernah sampai ke pemilik, tombol Setujui/Tolak tidak muncul, dan chat negosiasi tidak punya tujuan (pesan tidak terkirim). (2) Deteksi barter masuk kini mencocokkan ownerEmail ATAU ownerKey ATAU ownerId sehingga sisi pemilik barang selalu menerima penawaran. (3) Chat negosiasi dua arah diperbaiki: pesan dikirim ke email lawan lewat koleksi messages, dan halaman negosiasi otomatis menyegarkan saat pesan lawan masuk tanpa menutup halaman atau menghapus ketikan. (4) Tombol dipertegas menjadi "Setujui Penawaran" dan "Tolak". (5) Deposit barter 50 MP hanya ditarik setelah penawaran disetujui (sebelumnya ditarik saat masih menunggu respon). PENTING: aturan Firestore koleksi barters ikut diperbarui (pihak lawan boleh memperbarui status/trail/negosiasi) — WAJIB publish ulang Rules di Firebase Console agar Setujui/Tolak jalan lintas perangkat.'],
   ['1.9.77','ATURAN & PELANGGARAN BARTER DITERAPKAN PENUH sesuai dokumen "Aturan & Pelanggaran Barter v1.0". (1) Katalog 19 jenis pelanggaran dengan poin minus persis sesuai dokumen, dikelompokkan Paling Berat / Berat / Sedang / Ringan. (2) SISTEM SANKSI OTOMATIS: total poin minus ≤ -20 = Peringatan (notifikasi resmi + badge di profil, masih bisa barter), ≤ -50 = Suspensi (akun disuspend sementara: tidak bisa membuat penawaran barter baru, tidak bisa upload barang baru, barter berjalan masih bisa diselesaikan, menunggu review admin), ≤ -75 = Banned Permanen (akun diblokir, semua fitur ditutup, listing dihapus, banding lewat email support). (3) PROSES PELAPORAN: tombol Laporkan di halaman Negosiasi barter, detail barang, dan profil pengguna; form meminta jenis pelanggaran, kronologi (WAJIB), dan bukti gambar (opsional); status awal "Menunggu Review" dan poin minus TIDAK langsung diterapkan. (4) Halaman "Aturan & Pelanggaran Barter" berisi Bagian 1-4 (aturan umum, jenis pelanggaran, sanksi otomatis, proses pelaporan) dapat dibuka dari menu Akun. (5) Portal Admin: daftar laporan kini menampilkan jenis, tingkat, dan poin; ada tombol Setujui (poin minus otomatis diterapkan ke akun lewat adminGrants) dan Tolak. Tidak ada perubahan aturan Firestore yang wajib — koleksi violations (create: user, update: admin) dan adminGrants (create: admin) sudah mendukung.'],
   ['1.9.76','PERBAIKAN HALAMAN MASUK (LOGIN). Kolom "Konfirmasi Password" sekarang HANYA muncul saat mendaftar (Sign up). Sebelumnya, bila email yang dimasukkan belum tersimpan di perangkat itu, halaman "Masuk ke MUTARI" ikut menampilkan formulir buat akun dengan DUA kolom password + centang syarat, sehingga tampak seperti pendaftaran akun baru. Kini halaman masuk selalu hanya punya SATU kolom password dengan tombol "Masuk"; kolom konfirmasi dan daftar syarat hanya tampil pada alur "Buat Akun MUTARI". Akun baru tetap dibuat bila email belum ada, tetapi tampilannya tidak lagi menyerupai pendaftaran. Tidak ada perubahan lain pada fitur MUTARI.'],
@@ -3146,6 +3150,12 @@ const FB_RULES=[
 "      return n is string && n.size() >= 2",
 "        && !(n.lower() in ['pengguna','user','guest','anon','anonymous','tamu','tanpa nama','tanpa_nama','unknown','none','null','-','.']);",
 "    }",
+"    function ownsAccount(key) {",
+"      return isSigned()",
+"        && key is string",
+"        && key.size() > 2",
+"        && exists(/databases/$(database)/documents/users/$(key)/devices/$(request.auth.uid));",
+"    }",
 "    function counterFields() {",
 "      return ['views','viewCount','viewCounts','view','likes','likeCount','likesCount','commentCount','commentsCount','commentN'];",
 "    }",
@@ -3178,16 +3188,23 @@ const FB_RULES=[
 "      allow delete: if isAdmin()",
 "        || (isSigned() && resource.data.uid == request.auth.uid)",
 "        || (isSigned() && !('uid' in resource.data));",
+"      match /devices/{deviceUid} {",
+"        allow read, write: if isSigned() && request.auth.uid == deviceUid;",
+"      }",
 "    }",
 "",
 "    // ==================== BARANG ====================",
 "    match /items/{itemId} {",
 "      allow read: if true;",
-"      allow create: if isSigned() && request.resource.data.ownerUid == request.auth.uid;",
-"      allow update: if (isSigned() && resource.data.ownerUid == request.auth.uid)",
+"      allow create: if isSigned() && (request.resource.data.ownerUid == request.auth.uid",
+"        || ('ownerKey' in request.resource.data && ownsAccount(request.resource.data.ownerKey)));",
+"      allow update: if (isSigned() && (resource.data.ownerUid == request.auth.uid",
+"          || ('ownerKey' in resource.data && ownsAccount(resource.data.ownerKey))",
+"          || ('ownerKey' in request.resource.data && ownsAccount(request.resource.data.ownerKey))))",
 "        || (isSigned() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(counterFields()))",
 "        || (isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(itemModerationFields()));",
-"      allow delete: if isAdmin() || (isSigned() && resource.data.ownerUid == request.auth.uid);",
+"      allow delete: if isAdmin() || (isSigned() && (resource.data.ownerUid == request.auth.uid",
+"        || ('ownerKey' in resource.data && ownsAccount(resource.data.ownerKey))));",
 "    }",
 "",
 "    // ==================== BARTER ====================",
@@ -3195,7 +3212,7 @@ const FB_RULES=[
 "      allow read: if isSigned();",
 "      allow create: if isSigned() && request.resource.data.fromUid == request.auth.uid;",
 "      allow update: if (isSigned()",
-"          // v1.9.78: identitas akun MUTARI memakai EMAIL (auth perangkat anonim), sehingga\n          // pihak lawan barter tidak selalu punya UID yang sama dengan pemilik barang.\n          // Karena itu pengguna yang sudah login boleh memperbarui HANYA field kolaboratif\n          // barter di bawah ini (status/negosiasi/pengiriman/konfirmasi). Field identitas\n          // dan kepemilikan tetap tidak bisa diubah oleh non-admin.\n          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt','cancelledAt','cancelledBy','trail','ship','confirms','confirmPhotos','reviews','deposits','insurance','insAmount','doneAt','refunded','ownerKey','ownerEmail','respondBy','acceptedAt','method','methodBy','methodName','methodApproved','methodApprovedBy','rewarded','reviewReleased','reviewDeadline','notifiedStart','notifiedEnd','certNo','ownerUid']))",
+"          // v1.9.78: identitas akun MUTARI memakai EMAIL (auth perangkat anonim), sehingga\n          // pihak lawan barter tidak selalu punya UID yang sama dengan pemilik barang.\n          // Karena itu pengguna yang sudah login boleh memperbarui HANYA field kolaboratif\n          // barter di bawah ini (status/negosiasi/pengiriman/konfirmasi). Field identitas\n          // dan kepemilikan tetap tidak bisa diubah oleh non-admin.\n          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt','cancelledAt','cancelledBy','trail','ship','confirms','confirmPhotos','reviews','deposits','insurance','insAmount','doneAt','refunded','ownerKey','ownerEmail','respondBy','acceptedAt','method','methodBy','methodName','methodApproved','methodApprovedBy','rewarded','reviewReleased','reviewDeadline','notifiedStart','notifiedEnd','certNo','ownerUid','compensations','compClaimed']))",
 "        || isAdmin();",
 "      allow delete: if isAdmin();",
 "    }",
@@ -5225,7 +5242,7 @@ const MILESTONES=[
     {e:'🥈',t:'25× upload barang',badge:'Silver',role:'Super Curator',v:'+100 MP bonus'},
     {e:'🥇',t:'100× upload barang',badge:'Gold',role:'Master Curator',v:'+200 MP bonus'}]},
   {k:'m_bar',cls:'g',ic:'cycle',t:'Barter Selesai',rows:[
-    {e:'🤝',t:'Barter pertama selesai',badge:'Bronze',role:'First Barterer',v:'+50 MP'},
+    {e:'🤝',t:'Barter pertama selesai',badge:'Bronze',role:'First Barterer',v:'+30 MP'},
     {e:'🥇',t:'10× barter selesai',badge:'Silver',role:'10× Barterer',v:'+75 MP bonus'},
     {e:'🏆',t:'50× barter selesai',badge:'Gold',role:'50× Barterer',v:'+150 MP bonus'},
     {e:'💯',t:'100× barter selesai',badge:'Platinum',role:'100× Barterer',v:'+300 MP bonus'}]},
@@ -5258,7 +5275,8 @@ const MILESTONES=[
     {e:'📝',t:'Listing Tidak Lengkap (Ringan)',v:'-1 MP'},
     {e:'🔄',t:'Ubah Syarat di Menit Terakhir (Ringan)',v:'-1 MP'},
     {e:'🗑️',t:'Hapus barang yang diupload',v:'-20 MP'},
-    {e:'❌',t:'Batalkan barter (sebagai penawar)',v:'-5 MP'}]},
+    {e:'🚫',t:'Hapus barang berlebihan (3x dalam 1 jam)',v:'-20 MP'},
+    ]},
   {k:'m_all',cls:'p',ic:'trophy',t:'Semua Penghargaan',rows:[
     {e:'💗',t:'50 like diterima',badge:'Bronze',role:'Favorite'},
     {e:'🌟',t:'200 like diterima',badge:'Silver',role:'Superstar'},
@@ -5284,7 +5302,7 @@ const POINT_TIPS=[
 ];
 const MP_EARN=[
   {ic:'box',t:'Upload Barang',d:'Dapat +20 MP',v:'+20 MP'},
-  {ic:'trend',t:'Selesaikan Barter',d:'Dapat +50 MP',v:'+50 MP'},
+  {ic:'trend',t:'Selesaikan Barter',d:'Dapat +30 MP',v:'+30 MP'},
   {ic:'usercheck',t:'Verifikasi Profil',d:'Dapat +30 MP',v:'+30 MP'},
   {ic:'sparkles',t:'Check-in Harian',d:'Dapat +5 MP + bonus streak',v:'+5 MP'},
   {ic:'book',t:'Berikan Review',d:'Dapat +10 MP + 20 MP bonus',v:'+30 MP'},
@@ -5851,7 +5869,7 @@ function rejectBarter(id){
 
 
 /* ===== TAHAP 2-5: NEGOSIASI, PENGIRIMAN, KONFIRMASI, REVIEW ===== */
-const BARTER_DEPOSIT=20, BARTER_INSURANCE=60;
+const BARTER_DEPOSIT=20, BARTER_INSURANCE=50;
 const BARTER_STEPS=['Penawaran','Diterima','Negosiasi','Pengiriman','Tukar','Konfirmasi','Selesai','Review'];
 function barterPeerEmail(b){
   try{
@@ -6506,7 +6524,7 @@ function accWrap(k,cls,icon,title,sub,body){
 const EARN_ROWS=[
   {e:'🎁',n:'Bergabung MUTARI',note:'sekali',v:'+10 MP'},
   {e:'📦',n:'Upload Barang',note:'per upload',v:'+20 MP'},
-  {e:'🤝',n:'Selesaikan Barter',note:'per barter',v:'+50 MP'},
+  {e:'🤝',n:'Selesaikan Barter',note:'per barter',v:'+30 MP'},
   {e:'✅',n:'Verifikasi Profil',note:'maks 2×',v:'+30 MP'},
   {e:'💗',n:'Like Barang',note:'per like',v:'+2 MP / +1 MP'},
   {e:'⭐',n:'Berikan Review',note:'per review',v:'+10 MP'}
@@ -8761,7 +8779,7 @@ function vUpload(){
     '<label class="upl-label">Deskripsi Lengkap <i>*</i></label>'+
     '<textarea class="upl-input" id="fDesc" placeholder="Jelaskan barangmu secara detail..." oninput="uplSync()"></textarea>'+
     '<p class="upl-error" id="descErr">Wajib, minimal 10 karakter (0/10)</p>'+
-    '<div class="asuransi"><span class="as-ic">🛡️</span><p><b>Asuransi Barter:</b> Kedua pihak akan menaruh deposit 50 MP saat barter diterima. Jika salah satu pihak melanggar (barang tidak sesuai deskripsi), 50 MP mereka akan dipotong dan diberikan sebagai kompensasi ke pihak lain.</p></div>'+
+    '<div class="asuransi"><span class="as-ic">🛡️</span><p><b>Asuransi Barter:</b> Pengaju menaruh jaminan 20 MP saat mengajukan, partner menaruh 20 MP saat menerima. Jaminan dikembalikan penuh bila barter selesai; bila dibatalkan setelah diterima, jaminan pembatal hangus menjadi kompensasi pihak lain (asuransi premium dipotong admin 3%).</p></div>'+
     '<label class="upl-label plain">Lokasi GPS (otomatis)</label>'+
     '<div class="loc-box" style="align-items:flex-start"><span class="lp">'+ico(ICO.pin)+'</span><span id="fGeoBox" style="flex:1;min-width:0">'+geoStatusHtml()+'</span></div>'+
     '<div id="fGeoBtn"></div>'+
@@ -10200,8 +10218,8 @@ function sbInit(){
 })();
 
 /* ---------- konstanta & helper ---------- */
-const BARTER_REWARD=30, REVIEW_RELEASE=20, REVIEW_WRITE=10, BARTER_RESPONSE_MS=72*3600*1000;
-const INS_TIERS=[60,100,150,200];
+const BARTER_REWARD=30, REVIEW_RELEASE=20, REVIEW_WRITE=10, BARTER_RESPONSE_MS=48*3600*1000;
+const INS_TIERS=[50,100,150,200];
 const COURIERS=['JNE','J&T Express','SiCepat','AnterAja','Ninja Xpress','Pos Indonesia','Grab Express','GoSend','Lainnya'];
 const REV_CHIPS=[
   {t:'Barang Sesuai Deskripsi',e:'✅'},
@@ -10387,7 +10405,7 @@ function bxStatusStrip(b){
   return '';
 }
 function bxIncomingCard(b){
-  return '<div class="bx-inbox"><b>💌 Penawaran masuk</b><p>'+BARTER_DEPOSIT+' MP deposit jika diterima. Pelanggaran = poin hangus.</p>'+
+  return '<div class="bx-inbox"><b>💌 Penawaran masuk</b><p>Terima = menaruh jaminan '+BARTER_DEPOSIT+' MP. Tolak = deposit pengaju dikembalikan penuh.</p>'+
     '<div class="bx-inbox-act"><button class="ok" onclick="acceptBarter(\''+b.id+'\')">✓ Terima</button><button class="no" onclick="rejectBarter(\''+b.id+'\')">✕ Tolak</button></div></div>';
 }
 function bxCountdown(b){
@@ -10484,7 +10502,7 @@ function negoHtml(b){
   var bodyHtml='<div class="bx-pad">'+
       bxSwapSummary(b)+
       bxStatusStrip(b)+
-      (st==='pending'? (bxCountdown(b)+'<div class="bx-hint">🛡️ Deposit: '+BARTER_DEPOSIT+' MP ditahan jika diterima. Pelanggaran = poin hangus.</div>'+(barterIsIncoming(b)?bxIncomingCard(b):'')) : '')+
+      (st==='pending'? (bxCountdown(b)+'<div class="bx-hint">🛡️ Jaminan '+BARTER_DEPOSIT+' MP per pihak — pengaju saat mengajukan, partner saat menerima. Selesai = dikembalikan penuh; batal setelah diterima = jaminan hangus.</div>'+(barterIsIncoming(b)?bxIncomingCard(b):'')) : '')+
       ((st==='accepted'||st==='shipping'||st==='done')? bxDepositActive(b):'')+
       ((st==='accepted' && !b.method)? bxMethodPicker(b):'')+
       ((st==='accepted'||st==='shipping')? bxMethodRow(b):'')+
@@ -11294,6 +11312,7 @@ function sbListenBarters(){
              reviews:v.reviews||{}, rewarded:v.rewarded||{}, refunded:v.refunded||{}, reviewReleased:v.reviewReleased||{},
              method:String(v.method||''), methodBy:String(v.methodBy||''), methodName:String(v.methodName||''),
              methodApproved:!!v.methodApproved, methodApprovedBy:String(v.methodApprovedBy||''), insAmount:Number(v.insAmount||0),
+             compensations:v.compensations||{}, compClaimed:v.compClaimed||{},
              ship:v.ship||null, trail:(Array.isArray(v.trail)?v.trail:[])};
           state.barters=Array.isArray(state.barters)?state.barters:[];
           state.barters.unshift(b); changed=true; incomingNew=b;
@@ -11309,6 +11328,8 @@ function sbListenBarters(){
       if(v.methodApprovedBy!==undefined) b.methodApprovedBy=String(v.methodApprovedBy||'');
       if(v.insAmount!==undefined) b.insAmount=Number(v.insAmount||0);
       if(v.deposits) b.deposits=v.deposits;
+      if(v.compensations) b.compensations=v.compensations;
+      if(v.compClaimed) b.compClaimed=v.compClaimed;
       if(v.insurance) b.insurance=v.insurance;
       if(v.confirms) b.confirms=v.confirms;
       if(v.confirmPhotos) b.confirmPhotos=v.confirmPhotos;
@@ -11435,6 +11456,628 @@ function barterTick(){
     });
   }catch(e){}
 }
+
+
+/* =====================================================================================
+   MUTARI v1.10.2 — KEPEMILIKAN BERBASIS AKUN (bukan ID sesi browser)
+   -------------------------------------------------------------------------------------
+   Sebelumnya kepemilikan barang dikunci ke UID anonim perangkat (ownerUid == auth.uid).
+   Akibatnya, saat akun MUTARI yang sama dibuka di browser/sesi lain (UID berbeda),
+   Firestore MENOLAK menyimpan barang tersebut -> muncul peringatan
+   "Sinkronisasi tertunda (barang)" setiap kali refresh.
+
+   Perbaikan:
+   1) Setiap perangkat yang login mendaftarkan dirinya di
+      users/<kunciAkun>/devices/<uid>, sehingga akun yang sama dikenali dari
+      perangkat mana pun (chrome/edge/hp).
+   2) Aturan Firestore (rules) memakai kepemilikan akun: penulis dianggap pemilik
+      bila UID-nya terdaftar sebagai perangkat akun pemilik barang.
+   3) Barang didorong ke cloud SETELAH perangkat terdaftar (urutan diperbaiki).
+   4) Peringatan sinkronisasi tidak lagi muncul saat cloud belum tersambung.
+   ===================================================================================== */
+
+function bxRegisterDevice(cb){
+  try{
+    var db=sbDb(); if(!db){ if(cb) cb(); return; }
+    var key=userKeyOf(myEmail()); if(!key){ if(cb) cb(); return; }
+    var uid=sbUid(); if(!uid){ if(cb) cb(); return; }
+    db.collection('users').doc(key).collection('devices').doc(uid)
+      .set({at:Date.now(),email:myEmail()},{merge:true})
+      .then(function(){ if(cb) cb(); })
+      .catch(function(){ if(cb) cb(); });
+  }catch(e){ if(cb) cb(); }
+}
+function cloudPushMyItems(){
+  if(!fbOnline()) return;
+  bxRegisterDevice(function(){
+    try{ (state.items||[]).forEach(function(it){ cloudPushItem(it); }); }catch(e){}
+    try{ cloudSetUserDoc(); }catch(e){}
+    try{ cloudQueueFlush(); }catch(e){}
+    try{ bxFlushOutbox(); }catch(e){}
+  });
+}
+var __bxFailShown2=0;
+function cloudFailNotify(kind){
+  try{
+    if(!sbOnline()) return;
+    if(__bxFailShown2 && (Date.now()-__bxFailShown2)<120000) return;
+    __bxFailShown2=Date.now();
+    toast('⚠️ Sebagian data belum tersinkron ('+(kind||'cloud')+') — akan dicoba lagi otomatis.');
+  }catch(e){}
+}
+
+
+/* =====================================================================================
+   MUTARI v1.10.3 — POIN BARTER SESUAI ATURAN MUTARI + PERBAIKAN AKAR MASALAH
+   -------------------------------------------------------------------------------------
+   MASALAH: deposit/jaminan dikembalikan berkali-kali (+20 MP berulang) sehingga saldo
+   poin berlebih di luar aturan MUTARI.
+
+   AKAR MASALAH: peta (map) barter memakai EMAIL sebagai kunci. Email mengandung titik
+   (contoh: nama@gmail.com). Firestore menafsirkan kunci bertitik sebagai FIELD BERSARANG
+   saat set(merge:true), sehingga setelah sinkronisasi penanda seperti
+   deposits["nama@gmail.com"] / refunded["nama@gmail.com"] HILANG -> penjaga (guard) gagal
+   dan pengembalian terjadi berulang setiap kali tick berjalan.
+
+   PERBAIKAN:
+   1) Semua peta barter memakai KUNCI AMAN (titik diganti "_") + pembacaan toleran
+      terhadap data lama (bentuk bersarang), sehingga penanda tidak pernah hilang.
+   2) Angka mengikuti aturan resmi MUTARI:
+        - Jaminan/deposit barter   : 50 MP per pihak (ditahan saat diterima)
+        - Selesaikan barter        : +50 MP
+        - Berikan review           : +10 MP (menulis) + 20 MP (bonus) = +30 MP
+        - Jaminan dikembalikan PENUH dan HANYA SEKALI saat barter selesai
+   3) Potongan otomatis sesuai aturan MUTARI:
+        - Batalkan barter sebagai penawar : -5 MP
+        - Bonus poin penyeimbang dikembalikan bila barter dibatalkan
+   ===================================================================================== */
+
+const CANCEL_MP=5;   /* aturan poin MUTARI: batalkan barter (sebagai penawar) -5 MP */
+
+/* ---------- kunci peta yang aman untuk Firestore (tanpa titik) ---------- */
+function bxMKey(email){ return String(email||'').toLowerCase().trim().replace(/\./g,'_'); }
+function bxMLegacyGet(map,email){
+  try{
+    var raw=String(email||'').toLowerCase().trim();
+    if(!raw || raw.indexOf('.')<0) return undefined;
+    /* Firestore memecah SETIAP titik menjadi level bersarang:
+       a.b@c.d.com -> {a:{'b@c':{d:{com: nilai}}}}. Telusuri semua level. */
+    var segs=raw.split('.');
+    var node=map;
+    for(var i=0;i<segs.length;i++){
+      if(node===null || typeof node!=='object') return undefined;
+      if(i===segs.length-1) return (node[segs[i]]!==undefined)?node[segs[i]]:undefined;
+      node=node[segs[i]];
+    }
+  }catch(e){}
+  return undefined;
+}
+function bxMGet(map,email){
+  try{
+    if(!map) return undefined;
+    var k=bxMKey(email);
+    if(map[k]!==undefined) return map[k];
+    var raw=String(email||'').toLowerCase().trim();
+    if(map[raw]!==undefined) return map[raw];
+    var lg=bxMLegacyGet(map,email);
+    if(lg!==undefined) return lg;
+  }catch(e){}
+  return undefined;
+}
+function bxMPut(map,email,val){ if(map) map[bxMKey(email)]=val; }
+
+/* ---------- jaminan (deposit) : ditahan SEKALI saat diterima ---------- */
+function ensureBarterDeposit(b){
+  try{
+    if(!b || !(b.status==='accepted'||b.status==='shipping'||b.status==='done')) return;
+    b.deposits=b.deposits||{};
+    var me=myEmail();
+    if(bxMGet(b.deposits,me)!==undefined) return;          /* sudah ditahan */
+    if(Number(state.points||0)<BARTER_DEPOSIT) return;     /* poin tidak cukup */
+    spendPoints(BARTER_DEPOSIT,'Jaminan barter ditahan','🔒');
+    bxMPut(b.deposits,me,BARTER_DEPOSIT);
+    barterPatch(b,{deposits:b.deposits});
+  }catch(e){}
+}
+/* ---------- pengembalian jaminan : PENUH, HANYA SEKALI ---------- */
+function refundBarterDeposit(b){
+  try{
+    b.deposits=b.deposits||{}; b.refunded=b.refunded||{};
+    var me=myEmail();
+    if(bxMGet(b.refunded,me)) return;                      /* sudah dikembalikan */
+    var dep=Number(bxMGet(b.deposits,me)||0);
+    var ins=Number(bxMGet(b.insurance,me)||0);
+    var amt=dep+ins;
+    bxMPut(b.refunded,me,true);
+    if(amt>0){ try{ awardPoints(amt,'Jaminan barter dikembalikan','🔓'); }catch(e){} }
+    barterPatch(b,{refunded:b.refunded,deposits:b.deposits});
+  }catch(e){}
+}
+/* ---------- asuransi premium (opsional) ---------- */
+function bxChargeInsurance(b){
+  try{
+    var amt=Number(b.insAmount||INS_TIERS[0]); b.insurance=b.insurance||{};
+    var me=myEmail();
+    if(bxMGet(b.insurance,me)!==undefined) return;
+    if(Number(state.points||0)<amt) return;
+    spendPoints(amt,'Asuransi premium barter','🛡️');
+    bxMPut(b.insurance,me,amt);
+    barterPatch(b,{insurance:b.insurance});
+  }catch(e){}
+}
+/* ---------- hadiah selesai barter : +50 MP (sekali) ---------- */
+function bxRewardSelf(b){
+  try{
+    b.rewarded=b.rewarded||{};
+    var me=myEmail();
+    if(bxMGet(b.rewarded,me)) return;                      /* sudah pernah */
+    bxMPut(b.rewarded,me,true);
+    awardPoints(BARTER_REWARD,'Barter selesai','🤝');
+    barterPatch(b,{rewarded:b.rewarded});
+  }catch(e){}
+}
+/* ---------- tampilan ---------- */
+function bxDepositActive(b){
+  var mine=Number(bxMGet(b.deposits,myEmail())||0), peer=0, ins=Number(bxMGet(b.insurance,myEmail())||0);
+  try{ var pe=barterPeerEmail(b); if(pe) peer=Number(bxMGet(b.deposits,pe)||0); }catch(e){}
+  var total=mine+peer+ins;
+  return '<div class="bx-dep"><span>🛡️ <b>Jaminan Aktif</b> — '+locNum(mine)+'+'+locNum(peer)+' MP ditahan'+(ins?(' · asuransi '+locNum(ins)+' MP'):'')+'</span><b>'+locNum(total)+' MP</b></div>';
+}
+function bxConfirmRow(b){
+  var conf=b.confirms||{}, me=myEmail(), peer=barterPeerEmail(b);
+  var iC=!!bxMGet(conf,me), pC=!!(peer && bxMGet(conf,peer));
+  var turn = iC ? (pC?'Selesai!':'Menunggu…') : 'Giliran kamu!';
+  return '<div class="bx-cfrow">'+
+    '<span class="bx-cf'+(iC?' on':'')+'">'+(iC?'✓ ':'')+'Kamu</span>'+
+    '<span class="bx-cfarr">'+ico(ICO.chev)+'</span>'+
+    '<span class="bx-cf'+(pC?' on':'')+'">'+(pC?'✓ ':'')+esc(barterPeerName(b))+'</span>'+
+    '<span class="bx-cfturn">'+turn+'</span></div>';
+}
+function bxActions(b){
+  var st=b.status||'pending', inc=barterIsIncoming(b);
+  var out='';
+  if(st==='pending'){
+    return inc?'':'<div class="bx-actions"><button class="danger" onclick="cancelBarter(\''+b.id+'\')">✕ Batalkan Barter</button></div>';
+  }
+  if(st==='accepted') return '<div class="bx-actions"><button class="danger" onclick="cancelBarter(\''+b.id+'\')">✕ Batalkan Barter</button></div>';
+  if(st==='shipping'){
+    var me=myEmail(), peer=barterPeerEmail(b);
+    if(!bxMGet(b.confirms||{},me)) out+='<button class="primary" onclick="openBarterConfirm(\''+b.id+'\')">✓ Selesaikan Barter</button>';
+    else if(peer && !bxMGet(b.confirms||{},peer)) out+='<button class="primary" disabled style="opacity:.6">Menunggu konfirmasi pihak lain…</button>';
+    out+='<button class="danger" onclick="cancelBarter(\''+b.id+'\')">✕ Batalkan Barter</button>';
+    return '<div class="bx-actions">'+out+'</div>';
+  }
+  return '';
+}
+/* ---------- konfirmasi selesai (kunci aman) ---------- */
+function openBarterConfirm(id){
+  var b=findBarterById(id); if(!b) return;
+  state.bxProof=state.bxProof||'';
+  var conf=b.confirms||{}, me=myEmail(), peer=barterPeerEmail(b);
+  var iC=!!bxMGet(conf,me), pC=!!(peer && bxMGet(conf,peer));
+  var proof=state.bxProof;
+  var ready=!!(proof && String(proof).length>20);
+  sheet('Konfirmasi Barter Selesai',
+    '<div class="bx-cfbox"><b>Status Konfirmasi Kedua Pihak</b>'+
+      '<div class="bx-cfline"><span>Anda</span><b>'+(iC?'✓ sudah konfirmasi':'belum konfirmasi')+'</b></div>'+
+      '<div class="bx-cfline"><span>'+esc(barterPeerName(b))+'</span><b>'+(pC?'✓ sudah konfirmasi':'belum konfirmasi')+'</b></div>'+
+      '<div class="muted">→ Barter selesai ketika kedua pihak sudah konfirmasi.</div></div>'+
+    '<label class="form-label">Foto Bukti Serah Terima *</label>'+
+    '<div class="muted" style="margin:0 2px 8px">Upload foto bukti pengiriman (resi, paket) atau foto barang yang diterima. <b>Wajib</b> sebagai bukti sengketa.</div>'+
+    (proof?('<div class="bx-proof"><img src="'+proof+'" alt="bukti"><button class="bx-proof-x" onclick="bxProofClear(\''+id+'\')">×</button></div>'):'')+
+    '<label class="bx-upload">'+(proof?'Ganti Foto Bukti':'+ Tambah Foto Bukti')+
+      '<input type="file" accept="image/*" onchange="bxProofPick(event,\''+id+'\')" style="display:none"></label>'+
+    '<div class="bx-warn">⚠️ <b>Pastikan barter benar-benar selesai.</b> Dengan mengonfirmasi, Anda menyatakan bahwa pertukaran barang sudah terjadi dan sesuai deskripsi. Jaminan '+BARTER_DEPOSIT+' MP dikembalikan penuh setelah kedua pihak konfirmasi.</div>'+
+    '<label class="bx-check"><input type="checkbox" id="bxC1" '+(ready?'checked':'')+'> Barang sudah ditukar</label>'+
+    '<label class="bx-check"><input type="checkbox" id="bxC2" '+(ready?'checked':'')+'> Kondisi barang sesuai deskripsi</label>'+
+    '<label class="bx-check"><input type="checkbox" id="bxC3" disabled '+(ready?'checked':'')+'> Foto bukti serah terima sudah diupload</label>'+
+    '<div style="display:flex;gap:8px;margin-top:14px"><button class="btn-ghost" style="flex:1" onclick="closeSheet()">Batal</button>'+
+    '<button class="btn-primary" style="flex:1;margin:0" '+(ready?'':'disabled style="opacity:.55"')+' onclick="bxConfirmSubmit(\''+id+'\')">Konfirmasi Selesai</button></div>');
+}
+function bxConfirmSubmit(id){
+  var b=findBarterById(id); if(!b) return;
+  if(!state.bxProof){ toast('Foto bukti wajib diupload dulu'); return; }
+  b.confirms=b.confirms||{}; b.confirmPhotos=b.confirmPhotos||{};
+  var me=myEmail();
+  if(bxMGet(b.confirms,me)){ closeSheet(); openBarterNegotiation(id); return; }
+  bxMPut(b.confirms,me,{at:Date.now()});
+  bxMPut(b.confirmPhotos,me,state.bxProof);
+  bxTrail(b,'konfirmasi diterima');
+  var peer=barterPeerEmail(b);
+  var both=!!(peer && bxMGet(b.confirms,peer));
+  if(both){ b.status='done'; b.doneTime=Date.now(); b.reviewDeadline=b.doneTime+7*24*3600*1000; bxTrail(b,'selesai'); }
+  barterPatch(b,{confirms:b.confirms,confirmPhotos:b.confirmPhotos,status:b.status,doneAt:b.doneTime,reviewDeadline:b.reviewDeadline});
+  barterSys(b,'✅ '+myName()+' telah mengonfirmasi barter selesai. '+(both?'🎉 Kedua pihak telah mengonfirmasi.':'Menunggu konfirmasi pihak lain...'));
+  try{
+    if(peer && peer!==myEmail()) notifyUser(peer, both?'Barter selesai 🎉':'Konfirmasi barter menunggu',
+      both?('Barter "'+(b.title||'barang')+'" selesai. Jaminan dikembalikan.'):(myName()+' sudah konfirmasi. Giliran kamu.'),'barter');
+  }catch(e){}
+  closeSheet();
+  if(both){ finishBarter(b); } else { openBarterNegotiation(id); toast('Konfirmasi terkirim — menunggu pihak lain'); }
+}
+/* ---------- selesai barter ---------- */
+function finishBarter(b){
+  try{ bxRewardSelf(b); }catch(e){}
+  try{ refundBarterDeposit(b); }catch(e){}
+  try{ barterPatch(b,{status:'done',doneAt:b.doneTime||Date.now()}); }catch(e){}
+  var total=BARTER_REWARD+REVIEW_RELEASE+REVIEW_WRITE;
+  try{ barterSys(b,'🎉 Barter berhasil diselesaikan!\n💰 Masing-masing mendapat +'+BARTER_REWARD+' MP (langsung cair).\n🔓 Jaminan '+BARTER_DEPOSIT+' MP dikembalikan penuh (bukan keuntungan).\n⏳ +'+REVIEW_RELEASE+' MP lagi menunggu rilis — berikan review untuk mencairkannya!\n📋 Total jika review diberikan: +'+total+' MP ('+BARTER_REWARD+' barter + '+REVIEW_RELEASE+' bonus review + '+REVIEW_WRITE+' menulis review).\n⚠️ Batas waktu review: '+bxRevDeadlineText(b)+' (7 hari). Setelah itu, '+REVIEW_RELEASE+' MP hangus.'); }catch(e){}
+  try{ bxNotifyEnd(b); }catch(e){}
+  try{ if($('#walletOv') && $('#walletOv').classList.contains('open')) walletRender(); }catch(e){}
+  try{ subRender(); }catch(e){}
+  try{ openBarterNegotiation(b.id); }catch(e){}
+}
+/* ---------- ulasan (kunci aman) ---------- */
+function reviewedBarter(id){
+  var b=findBarterById(id);
+  if(b && b.reviews && bxMGet(b.reviews,myEmail())) return true;
+  return (act().reviews||[]).some(function(r){ return r.barterId===id; });
+}
+function submitReview(){
+  var id=state.reviewTarget, b=findBarterById(id); if(!b) return;
+  if(reviewedBarter(id)){ closeSheet(); toast('Kamu sudah memberi ulasan'); return; }
+  var stars=Math.max(1,Math.min(5,state.reviewStar||5));
+  var text=(($('#bxRevText')||{}).value||'').trim();
+  var chips=(state.revChips||[]).map(function(i){ return REV_CHIPS[i]?REV_CHIPS[i].t:''; }).filter(Boolean);
+  b.reviews=b.reviews||{}; b.reviewReleased=b.reviewReleased||{};
+  var me=myEmail();
+  bxMPut(b.reviews,me,{stars:stars,text:text,chips:chips,at:Date.now()});
+  var firstRelease=!bxMGet(b.reviewReleased,me);
+  bxMPut(b.reviewReleased,me,true);
+  bxTrail(b,'memberi ulasan');
+  barterPatch(b,{reviews:b.reviews,reviewReleased:b.reviewReleased});
+  try{ barterSys(b,'★'.repeat(stars)+' Review diberikan: "'+(text||'—')+'"\n✅ +'+REVIEW_RELEASE+' MP bonus dicairkan +'+REVIEW_WRITE+' MP menulis review = +'+(REVIEW_RELEASE+REVIEW_WRITE)+' MP total'); }catch(e){}
+  try{ awardPoints(REVIEW_WRITE,'Menulis ulasan','⭐'); }catch(e){}
+  if(firstRelease){ try{ awardPoints(REVIEW_RELEASE,'Bonus review barter','🎁'); }catch(e){} }
+  var a=act(); a.reviews.unshift({barterId:id,by:barterPeerName(b),rating:stars,text:text,time:Date.now()}); saveAct();
+  try{ sbPushReview(b,bxMGet(b.reviews,me)); }catch(e){}
+  var peer=barterPeerEmail(b);
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Ulasan baru ⭐',myName()+' memberi ulasan '+stars+' bintang untuk barter kalian.','social'); }catch(e){} }
+  closeSheet(); openBarterNegotiation(id);
+  toast('Review terkirim! +'+(REVIEW_RELEASE+REVIEW_WRITE)+' poin dirilis ('+REVIEW_RELEASE+' bonus barter + '+REVIEW_WRITE+' review)');
+}
+function bxDoneBlock(b){
+  var me=myEmail(), rev=bxMGet(b.reviews||{},me)||null;
+  var html='<div class="bx-inbox" style="border-color:rgba(18,169,126,.45);background:rgba(18,169,126,.09)"><b>✅ 🎉 Barter Selesai!</b><p>Kedua pihak telah mengonfirmasi. Jaminan '+BARTER_DEPOSIT+' MP sudah dikembalikan penuh.</p></div>';
+  if(!rev){
+    html+='<div class="bx-wait"><b>⏳ +'+REVIEW_RELEASE+' MP menunggu rilis!</b><p>Kirim review untuk melepaskan bonus +'+REVIEW_RELEASE+' MP + '+REVIEW_WRITE+' MP bonus review. Batas waktu: <b>'+bxRevDeadlineText(b)+'</b>.</p></div>';
+    html+='<div class="bx-actions" style="padding:10px 0 0"><button class="primary" onclick="openReview(\''+b.id+'\')">☆ Review &amp; Klaim +'+(REVIEW_RELEASE+REVIEW_WRITE)+' Poin</button></div>';
+  }else{
+    html+='<div class="bx-strip ok"><div class="bx-strip-t"><b>Ulasan sudah dikirim</b><span>'+'★'.repeat(Number(rev.stars||5))+' · bonus '+REVIEW_RELEASE+' MP dirilis + '+REVIEW_WRITE+' MP menulis review.</span></div></div>';
+  }
+  html+='<div class="bx-dbtn"><button class="green" onclick="openCertificatePage(\''+b.id+'\')">📜 Sertifikat</button><button onclick="openEnvPage()">🌱 Dampak Hijau</button></div>';
+  return html;
+}
+/* ---------- penjaga sinkron (versi kunci aman) ---------- */
+function barterTick(){
+  try{ bxEnsureListeners(); }catch(e){}
+  try{ bxFlushOutbox(); }catch(e){}
+  try{
+    var me=myEmail();
+    (state.barters||[]).forEach(function(b){
+      if(!b) return;
+      if(b.status==='pending' && !b.notifiedStart){ b.notifiedStart=true; bxNotifyStart(b); barterPatch(b,{notifiedStart:true}); }
+      if(b.status==='accepted'||b.status==='shipping'||b.status==='done'){ ensureBarterDeposit(b); }
+      if(b.status==='rejected'||b.status==='cancelled'||b.status==='expired'){ refundBarterDeposit(b); }
+      if(b.status==='done'){
+        if(!bxMGet(b.rewarded||{},me)) bxRewardSelf(b);
+        if(!bxMGet(b.refunded||{},me)) refundBarterDeposit(b);
+        if(!b.notifiedEnd){ b.notifiedEnd=true; bxNotifyEnd(b); barterPatch(b,{notifiedEnd:true}); }
+      }
+      if(b.methodApproved && b.method==='insurance' && bxMGet(b.insurance||{},me)===undefined) bxChargeInsurance(b);
+    });
+  }catch(e){}
+}
+
+
+/* =====================================================================================
+   MUTARI v1.10.4 — POIN BARTER SESUAI DOKUMEN RESMI
+   "Aturan Poin Barter MUTARI v1.0 — September 2026"
+   -------------------------------------------------------------------------------------
+   TAHAP 1  Pengaju  : -20 MP jaminan (dipotong saat mengajukan)
+   TAHAP 2  Partner  : Terima -> -20 MP jaminan | Tolak -> jaminan pengaju dikembalikan
+   TAHAP 3  Negosiasi: tidak ada perubahan poin
+   TAHAP 4  Selesai  : +30 MP bonus barter (langsung) | +20 MP review (ditahan)
+                       +20 MP refund jaminan (penuh) | refund asuransi premium 97%
+   TAHAP 5  Review   : +20 MP ditahan dicairkan + +10 MP menulis review = +30 MP; 7 hari
+   BATAL             : status Menunggu -> jaminan kembali
+                       status Diterima -> jaminan HANGUS jadi kompensasi pihak lain
+                       +asuransi -> kompensasi dipotong admin 3%
+   KEDALUWARSA       : 48 jam tanpa respon -> batal otomatis + jaminan dikembalikan
+   ===================================================================================== */
+
+const ADMIN_FEE=0.03;                    /* potongan admin 3% (asuransi premium) */
+const REVIEW_HOLD_DAYS=7;                /* batas klaim bonus review */
+
+/* ---------- pemotongan jaminan (pengaju saat mengajukan / partner saat menerima) ---------- */
+function bxChargeDeposit(b,email){
+  try{
+    if(!b || !email) return;
+    b.deposits=b.deposits||{};
+    if(bxMGet(b.deposits,email)!==undefined) return;          /* sudah dipotong */
+    var amt=(Number(state.points||0)>=BARTER_DEPOSIT)?BARTER_DEPOSIT:0;
+    if(amt>0){ spendPoints(amt,'Deposit jaminan ditahan','🔒'); }
+    else { try{ toast('Saldo kurang dari '+BARTER_DEPOSIT+' MP — jaminan dicatat 0 MP, barter tetap lanjut.'); }catch(e){} }
+    bxMPut(b.deposits,email,amt);
+    barterPatch(b,{deposits:b.deposits});
+  }catch(e){}
+}
+/* cadangan: pastikan jaminan sisi kita terpotong sesuai status */
+function ensureBarterDeposit(b){
+  try{
+    if(!b) return;
+    var me=myEmail();
+    var mine=!barterIsIncoming(b);
+    if(b.status==='pending'){ if(mine) bxChargeDeposit(b,me); return; }   /* pengaju saat mengajukan */
+    if(b.status==='accepted'||b.status==='shipping'){ bxChargeDeposit(b,me); return; }
+  }catch(e){}
+}
+/* ---------- pengembalian jaminan: penuh + asuransi premium 97% ---------- */
+function refundBarterDeposit(b){
+  try{
+    b.deposits=b.deposits||{}; b.refunded=b.refunded||{};
+    var me=myEmail();
+    if(bxMGet(b.refunded,me)) return;
+    var dep=Number(bxMGet(b.deposits,me)||0);
+    var ins=Number(bxMGet(b.insurance,me)||0);
+    bxMPut(b.refunded,me,true);
+    if(dep>0){ try{ awardPoints(dep,'Refund deposit jaminan','🔓'); }catch(e){} }
+    if(ins>0){
+      try{ awardPoints(ins,'Refund asuransi premium','🛡️'); }catch(e){}
+      var fee=Math.ceil(ins*ADMIN_FEE);
+      if(fee>0){ try{ spendPoints(fee,'Potongan admin 3% (asuransi)','🏦'); }catch(e){} }
+    }
+    barterPatch(b,{refunded:b.refunded,deposits:b.deposits});
+  }catch(e){}
+}
+/* ---------- terima penawaran: partner ikut menaruh jaminan 20 MP ---------- */
+function acceptBarter(id){
+  var b=findBarterById(id); if(!b) return;
+  if((b.status||'pending')!=='pending') return;
+  b.status='accepted'; b.acceptedAt=Date.now();
+  bxTrail(b,'penawaran disetujui');
+  barterSys(b,'✅ Penawaran diterima! Silakan tentukan metode pertukaran (COD atau Jasa Kirim).');
+  barterSys(b,'🛡️ Jaminan '+BARTER_DEPOSIT+' MP per pihak ditahan sampai barter selesai (aturan MUTARI).');
+  barterPatch(b,{status:'accepted',acceptedAt:b.acceptedAt});
+  try{ bxChargeDeposit(b,myEmail()); }catch(e){}
+  var peer=barterPeerEmail(b);
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Penawaran barter disetujui ✅',myName()+' menyetujui penawaranmu. Tentukan metode pertukaran.','barter'); }catch(e){} }
+  try{ pushNotif('Penawaran disetujui ✅','Kamu menyetujui penawaran dari '+(b.fromName||'pengguna')+'. Jaminan '+BARTER_DEPOSIT+' MP ditahan.','barter'); }catch(e){}
+  openBarterNegotiation(b.id);
+  toast('Penawaran disetujui — pilih metode pertukaran');
+}
+/* ---------- tolak penawaran: jaminan pengaju dikembalikan ---------- */
+function rejectBarter(id){
+  var b=findBarterById(id); if(!b) return;
+  if((b.status||'pending')!=='pending') return;
+  b.status='rejected'; b.cancelledAt=Date.now(); b.cancelledBy=myEmail();
+  bxTrail(b,'penawaran ditolak');
+  barterPatch(b,{status:'rejected',cancelledAt:b.cancelledAt,cancelledBy:b.cancelledBy});
+  barterSys(b,'❌ Penawaran ditolak. Deposit jaminan pengaju dikembalikan (aturan MUTARI).');
+  var peer=barterPeerEmail(b);
+  if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Penawaran barter ditolak','Deposit jaminanmu dikembalikan penuh.','barter'); }catch(e){} }
+  try{ pushNotif('Penawaran ditolak','Kamu menolak penawaran dari '+(b.fromName||'pengguna')+'.','barter'); }catch(e){}
+  openBarterNegotiation(b.id);
+  toast('Penawaran ditolak');
+}
+/* ---------- batalkan barter sesuai dokumen ---------- */
+function cancelBarter(id){
+  var b=findBarterById(id); if(!b) return;
+  if(b.status==='done'||b.status==='rejected'||b.status==='cancelled'||b.status==='expired'){ toast('Barter ini sudah selesai/dibatalkan'); return; }
+  var me=myEmail();
+  var afterAccept=(b.status==='accepted'||b.status==='shipping');
+  var myDep=Number(bxMGet(b.deposits,me)||0);
+  var myIns=Number(bxMGet(b.insurance,me)||0);
+  var msg = afterAccept
+    ? ('Batalkan barter ini?\n\nSesuai aturan MUTARI: karena barter sudah DITERIMA, deposit jaminan '+locNum(myDep)+' MP HANGUS'+(myIns?(' dan asuransi premium '+locNum(myIns)+' MP (dipotong admin 3%)'):'')+' dan diberikan sebagai kompensasi ke pihak lain.')
+    : ('Batalkan barter ini?\n\nStatus masih Menunggu — deposit jaminan dikembalikan penuh.');
+  if(!confirm(msg)) return;
+
+  b.status='cancelled'; b.cancelledAt=Date.now(); b.cancelledBy=me;
+  bxTrail(b,'dibatalkan');
+  var peer=barterPeerEmail(b);
+  /* bonus poin penyeimbang dikembalikan otomatis (aturan 6) */
+  if(b.bonusSpent && Number(b.bonus||0)>0){ try{ awardPoints(Number(b.bonus),'Bonus barter dikembalikan','↩️'); }catch(e){} b.bonusSpent=false; }
+
+  if(afterAccept){
+    var forfeit=myDep+myIns;
+    bxMPut(b.refunded,me,true);                       /* pembatal tidak menerima refund */
+    if(peer && forfeit>0){
+      var comp=(myIns>0)?Math.floor(forfeit*(1-ADMIN_FEE)):forfeit;   /* admin 3% bila ada asuransi */
+      bxMPut(b.compensations,peer,comp);
+    }
+    barterSys(b,'🚫 Barter dibatalkan oleh '+myName()+' setelah diterima.\n💠 Deposit jaminan hangus dan menjadi kompensasi pihak lain (aturan MUTARI).');
+    if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Barter dibatalkan setelah diterima','Deposit jaminan pembatal hangus menjadi kompensasi untukmu (dikurangi admin 3% bila ada asuransi).','barter'); }catch(e){} }
+  }else{
+    barterSys(b,'🚫 Barter dibatalkan oleh '+myName()+'. Deposit jaminan dikembalikan penuh (status masih Menunggu).');
+    if(peer && peer!==myEmail()){ try{ notifyUser(peer,'Barter dibatalkan','Deposit jaminan dikembalikan penuh.','barter'); }catch(e){} }
+  }
+  barterPatch(b,{status:'cancelled',cancelledAt:b.cancelledAt,cancelledBy:b.cancelledBy,refunded:b.refunded,compensations:b.compensations});
+  try{ pushNotif('Barter dibatalkan','Barter "'+(b.title||'barang')+'" telah dibatalkan.','barter'); }catch(e){}
+  closeNego(); try{ render(); }catch(e){}
+  toast(afterAccept?'Barter dibatalkan · deposit hangus':'Barter dibatalkan · deposit dikembalikan');
+}
+/* ---------- selesai barter (label sesuai dokumen) ---------- */
+function finishBarter(b){
+  try{ bxRewardSelf(b); }catch(e){}
+  try{ refundBarterDeposit(b); }catch(e){}
+  try{ barterPatch(b,{status:'done',doneAt:b.doneTime||Date.now()}); }catch(e){}
+  var total=BARTER_REWARD+REVIEW_RELEASE+REVIEW_WRITE;
+  try{ barterSys(b,'🎉 Barter berhasil diselesaikan!\n💰 Bonus barter selesai: +'+BARTER_REWARD+' MP (langsung cair).\n🔓 Refund deposit jaminan: +'+BARTER_DEPOSIT+' MP (dikembalikan penuh).\n⏳ Bonus review ditahan: +'+REVIEW_RELEASE+' MP — dicairkan setelah memberi review.\n📋 Net total bila review diberikan: +'+total+' MP ('+BARTER_REWARD+' bonus barter + '+REVIEW_RELEASE+' bonus review + '+REVIEW_WRITE+' menulis review).\n⚠️ Batas review: '+bxRevDeadlineText(b)+' ('+REVIEW_HOLD_DAYS+' hari). Setelah itu '+REVIEW_RELEASE+' MP hangus.'); }catch(e){}
+  try{ bxNotifyEnd(b); }catch(e){}
+  try{ if($('#walletOv') && $('#walletOv').classList.contains('open')) walletRender(); }catch(e){}
+  try{ subRender(); }catch(e){}
+  try{ openBarterNegotiation(b.id); }catch(e){}
+}
+/* ---------- penjaga sinkron: jaminan, refund, kompensasi, kedaluwarsa 48 jam ---------- */
+function barterTick(){
+  try{ bxEnsureListeners(); }catch(e){}
+  try{ bxFlushOutbox(); }catch(e){}
+  try{
+    var me=myEmail();
+    (state.barters||[]).forEach(function(b){
+      if(!b) return;
+      /* kedaluwarsa 48 jam tanpa respon -> batal otomatis, deposit dikembalikan */
+      if(b.status==='pending' && barterLeftMs(b)<=0){
+        b.status='expired'; b.cancelledAt=Date.now(); b.cancelledBy='sistem';
+        bxTrail(b,'kedaluwarsa 48 jam');
+        barterSys(b,'⏳ Barter kedaluwarsa (48 jam tanpa respon). Deposit jaminan dikembalikan otomatis.');
+        barterPatch(b,{status:'expired',cancelledAt:b.cancelledAt,cancelledBy:'sistem'});
+      }
+      if(b.status==='pending' && !b.notifiedStart){ b.notifiedStart=true; bxNotifyStart(b); barterPatch(b,{notifiedStart:true}); }
+      if(b.status==='pending'||b.status==='accepted'||b.status==='shipping'){ ensureBarterDeposit(b); }
+      if(b.status==='rejected'||b.status==='cancelled'||b.status==='expired'){ refundBarterDeposit(b); }
+      if(b.status==='done'){
+        if(!bxMGet(b.rewarded||{},me)) bxRewardSelf(b);
+        if(!bxMGet(b.refunded||{},me)) refundBarterDeposit(b);
+        if(!b.notifiedEnd){ b.notifiedEnd=true; bxNotifyEnd(b); barterPatch(b,{notifiedEnd:true}); }
+      }
+      if(b.methodApproved && b.method==='insurance' && bxMGet(b.insurance||{},me)===undefined) bxChargeInsurance(b);
+      /* kompensasi pembatalan setelah diterima */
+      var comp=Number(bxMGet(b.compensations||{},me)||0);
+      if(comp>0 && !bxMGet(b.compClaimed||{},me)){
+        bxMPut(b.compClaimed,me,true);
+        try{ awardPoints(comp,'Kompensasi pembatalan barter','💠'); }catch(e){}
+        barterPatch(b,{compClaimed:b.compClaimed});
+        try{ barterSys(b,'💠 '+myName()+' menerima kompensasi '+locNum(comp)+' MP dari pembatalan barter.'); }catch(e){}
+      }
+    });
+  }catch(e){}
+}
+
+
+/* =====================================================================================
+   MUTARI v1.10.5 — TIGA PERBAIKAN ATURAN
+   (1) Pelanggaran "Bukti Palsu / Penipuan -50 MP" TETAP sesuai draf. Bila saldo pengguna
+       di bawah nilai penalti, penalti tetap dipotong sampai DOMPET 0 MP (tidak pernah minus).
+   (2) Bonus milestone barter 10x / 50x / 100x benar-benar diberikan (+75 / +150 / +300 MP),
+       sesuai daftar di halaman Pencapaian.
+   (3) Penalti tambahan + laporan ke admin bila menghapus barang >= 3 kali dalam 1 jam
+       (catatan penting dokumen bagian 8).
+   ===================================================================================== */
+
+const DEL_ABUSE_LIMIT=3;                       /* jumlah hapus dalam 1 jam yang memicu penalti */
+const DEL_ABUSE_MP=20;                         /* besar penalti tambahan (angka tidak disebut dokumen) */
+const DEL_ABUSE_WINDOW=60*60*1000;
+
+/* ---------- (1) pemotongan poin yang tidak pernah membuat saldo minus ---------- */
+function bxSpendClamp(n,label,icon){
+  try{
+    n=Math.max(0,Math.floor(Number(n)||0));
+    var have=Math.max(0,Number(state.points||0));
+    if(n<=have){ return spendPoints(n,label,icon); }
+    if(have>0){ spendPoints(have,label+' (saldo habis)','⚠️'); }
+    else { try{ addTx(label+' (saldo 0 MP)',0,icon||'⚠️'); }catch(e){} }
+    try{ if(Number(state.points||0)<0){ state.points=0; LS.set('mutari_points',0); } }catch(e){}
+    return state.points;
+  }catch(e){ return state.points; }
+}
+/* penalti pelanggaran (laporan yang disetujui admin) memakai pemotongan aman.
+   Contoh: Bukti Palsu -50 MP, saldo 10 MP -> terpotong 10 MP, dompet 0 MP. */
+function applyPenaltyGrant(g,v){
+  const pts=Math.abs(Number(g.amount)||0);
+  if(!pts) return false;
+  let done={}; try{ done=LS.get('mutari_penalty_grants',{})||{}; }catch(e){ done={}; }
+  if(done[g.id]) return false;
+  bxSpendClamp(pts,'Penalti: '+(v.label||g.label||'pelanggaran barter'),'⚠️');
+  const lbl=String(v.vlabel||g.label||'Pelanggaran');
+  const a=act(); a.violations=a.violations||[];
+  let rec=null, fallback=null;
+  for(let i=0;i<a.violations.length;i++){
+    const x=a.violations[i];
+    if(x && (String(x.label||'')===lbl || (g.violationId && x.cloudId===g.violationId))){
+      if(x.status!=='disetujui'){ rec=x; break; }
+      if(!fallback) fallback=x;
+    }
+  }
+  if(!rec) rec=fallback;
+  try{ done[g.id]=Date.now(); LS.set('mutari_penalty_grants',done); }catch(e){}
+  if(rec){
+    rec.status='disetujui'; rec.points=-pts; rec.severity=rec.severity||v.severity||''; rec.appliedAt=rec.appliedAt||Date.now(); rec.note='Disetujui admin';
+    saveAct();
+  } else {
+    setViolationRecord({id:'gr_'+g.id, violationId:g.violationId||'', code:v.vtype||'', label:lbl, severity:v.severity||'', points:-pts, status:'disetujui', at:Date.now(), appliedAt:Date.now(), note:'Disetujui admin'});
+  }
+  try{ notifyUser(myEmail(),'⚠️ Poin minus diterapkan','-'+locNum(pts)+' MP · '+lbl+' (disetujui admin)','warning'); }catch(e){}
+  try{ syncSanction(); }catch(e){}
+  return true;
+}
+
+/* ---------- (2) bonus milestone barter 10x / 50x / 100x ---------- */
+const BX_BARTER_MILE=[
+  {id:'bx_bar10', n:10,  mp:75,  emo:'🥇',name:'10× Barterer'},
+  {id:'bx_bar50', n:50,  mp:150, emo:'🏆',name:'50× Barterer'},
+  {id:'bx_bar100',n:100, mp:300, emo:'💯',name:'100× Barterer'}
+];
+function bxBarterMilestones(){
+  try{
+    var done=barterCounts().done, a=act();
+    a.awards=Array.isArray(a.awards)?a.awards:[];
+    BX_BARTER_MILE.forEach(function(m){
+      if(done>=m.n && !a.awards.some(function(x){ return x && x.id===m.id; })){
+        a.awards.push({id:m.id,emo:m.emo,name:m.name,desc:'Bonus milestone '+m.n+'× barter selesai',time:Date.now()});
+        saveAct();
+        try{ awardPoints(m.mp,'Bonus milestone: '+m.n+'× barter selesai','🏆'); }catch(e){}
+        try{ pushNotif('🏆 Milestone '+m.n+'× barter!','Selamat! Bonus +'+locNum(m.mp)+' MP sudah masuk ke dompetmu.','barter'); }catch(e){}
+        try{ toast('🏆 Milestone '+m.n+'× barter — bonus +'+locNum(m.mp)+' MP!'); }catch(e){}
+      }
+    });
+  }catch(e){}
+}
+/* pastikan bonus milestone ikut dicek setiap kali pencapaian diperiksa */
+function checkAwards(){
+  const a=act(); let gained=null;
+  AWARDS.forEach(function(w){ if(!hasAward(w.id) && awardMetric(w.metric)>=w.goal){ a.awards.push({id:w.id,emo:w.emo,name:w.name,desc:w.desc,time:Date.now()}); gained=w; } });
+  if(gained) saveAct();
+  try{ bxBarterMilestones(); }catch(e){}
+  return gained;
+}
+
+/* ---------- (3) penalti hapus barang berlebihan (>=3 dalam 1 jam) ---------- */
+function bxDelTimes(){ try{ return LS.get('mutari_deltimes',[])||[]; }catch(e){ return []; } }
+function bxDelTimesSave(a){ try{ LS.set('mutari_deltimes',(a||[]).slice(-80)); }catch(e){} }
+function bxDeleteAbuseCheck(){
+  try{
+    var now=Date.now();
+    var list=bxDelTimes().filter(function(t){ return (now-Number(t))<DEL_ABUSE_WINDOW; });
+    list.push(now);
+    bxDelTimesSave(list);
+    var n=list.length;
+    if(n<DEL_ABUSE_LIMIT) return;
+    bxSpendClamp(DEL_ABUSE_MP,'Penalti: hapus barang berlebihan ('+n+'× dalam 1 jam)','🚫');
+    try{
+      sbAdd('violations',{
+        against:myName(), targetUid:myEmail(), by:'sistem', byUid:sbUid(), reporter:'sistem',
+        reason:'Hapus barang berlebihan: '+n+'× dalam 1 jam', itemId:'', itemTitle:'',
+        points:-DEL_ABUSE_MP, auto:true, status:'open', at:now
+      });
+    }catch(e){}
+    try{ pushNotif('⚠️ Penalti hapus barang berlebihan','Kamu menghapus barang '+n+'× dalam 1 jam. Penalti tambahan -'+locNum(DEL_ABUSE_MP)+' MP & laporan dikirim ke admin.','warning'); }catch(e){}
+    try{ toast('⚠️ Hapus barang '+n+'× dalam 1 jam — penalti tambahan -'+locNum(DEL_ABUSE_MP)+' MP & dilaporkan ke admin.'); }catch(e){}
+  }catch(e){}
+}
+function delItem(id){
+  const it=(state.items||[]).find(x=>x.id===id);
+  if(!it){ toast('Barang tidak ditemukan'); return; }
+  state.items=(state.items||[]).filter(x=>x.id!==id);
+  persistItems();
+  try{ cloudDeleteItem(id); }catch(e){}   /* hapus juga dari pasar cloud */
+  /* bersihkan data yang menempel supaya tidak menyisakan data yatim */
+  state.wishlist=(state.wishlist||[]).filter(x=>x!==id); LS.set('mutari_wishlist',state.wishlist);
+  state.barters=(state.barters||[]).filter(b=>b.itemId!==id); LS.set('mutari_barters',state.barters);
+  try{ const g=socialStore(); if(g.stats) delete g.stats[id]; if(g.comments) delete g.comments[id]; socialSave(); }catch(e){}
+  if(state.comments){ delete state.comments[id]; LS.set('mutari_comments', state.comments); }
+  /* aturan poin MUTARI: hapus barang -20 MP; dompet tidak pernah minus */
+  bxSpendClamp(DEL_MP,'Hapus barang','🗑️');
+  /* catatan 8 dokumen: hapus >= 3x dalam 1 jam -> penalti tambahan + lapor admin */
+  bxDeleteAbuseCheck();
+  closeSheet();
+  render(); subRender();
+  toast('Barang dihapus · -'+DEL_MP+' MP');
+}
+/* cek milestone berkala (mis. setelah barter selesai dari perangkat lain) */
+setInterval(function(){ try{ bxBarterMilestones(); }catch(e){} }, 15000);
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ try{ bxBarterMilestones(); }catch(e){} });
 
 
 /* =================== INIT =================== */
