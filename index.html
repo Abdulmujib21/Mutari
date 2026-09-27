@@ -2,8 +2,8 @@
 <!--
   MUTARI — Barter & Marketplace
   ==============================
-  Versi   : 1.10.0
-  Build   : 107
+  Versi   : 1.10.1
+  Build   : 108
   Berkas  : index.html (GitHub) · mutari-app-v1.9.78.html (uji langsung)
   Logo    : TERTANAM inline (base64) di dalam berkas ini — JANGAN dihapus.
   Tema    : hanya GELAP (fitur mode terang sudah dihapus).
@@ -60,7 +60,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="MUTARI">
 <meta name="description" content="MUTARI — Barter &amp; Marketplace. Ajak tukar barang, COD aman dengan titik temu, poin MP, komunitas barter, dan perlindungan transaksi.">
-<title>MUTARI — Barter &amp; Marketplace · v1.10.0</title>
+<title>MUTARI — Barter &amp; Marketplace · v1.10.1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2050,14 +2050,15 @@ const state = {
   timer: null
 };
 
-const APP_VERSION = '1.10.0';
-const APP_BUILD = 107;
+const APP_VERSION = '1.10.1';
+const APP_BUILD = 108;
 const ACCOUNT_HISTORY_MAX=1;   /* v1.9.70: halaman login hanya menampilkan akun terakhir dipakai */
 /* OAuth Client ID (Web) untuk login Google sungguhan. Kosongkan untuk memakai form email.
    Bisa juga diatur dari Pengaturan -> Google Client ID (tersimpan lokal). */
 const GOOGLE_CLIENT_ID = '';
 const CHANGELOG = [
-  ['1.10.0','ALUR BARTER PENUH: SATU HALAMAN UNTUK KEDUA PIHAK. (1) Halaman lawan barter kini dipakai bersama: sisi PENAWAR (menunggu respon, hanya Batalkan) dan sisi PEMILIK BARANG (Penawaran masuk + tombol Terima/Tolak) — tidak lagi dua halaman berbeda. (2) Batas waktu respon 72 jam ditampilkan berjalan (mis. 1h 23j). (3) Deposit jaminan 20 MP per pihak, ditahan saat penawaran diterima dan dikembalikan penuh saat barter selesai. (4) Metode pertukaran COD / Jasa Kirim (JNE, J&T Express, SiCepat, AnterAja, Ninja Xpress, Pos Indonesia, Grab Express, GoSend, Lainnya) / Asuransi Premium (60/100/150/200 MP) diusulkan satu pihak lalu harus disetujui pihak lain; ada tombol Terima/Tolak dan Ubah. (5) Setelah kedua pihak sepakat muncul baris konfirmasi dua pihak dan tombol Selesaikan Barter. (6) Konfirmasi selesai WAJIB memakai minimal 1 foto bukti serah terima + status konfirmasi kedua pihak. (7) Setelah kedua pihak konfirmasi: +30 MP langsung cair, +20 MP bonus review ditahan, +10 MP menulis ulasan; batas review 7 hari. (8) Halaman Beri Ulasan (bintang 1-5, chip penilaian, komentar maks 500), Sertifikat Barter (kode unik, dampak lingkungan, bagikan), dan halaman Dampak Lingkungan + Milestone Lingkungan. (9) Semua aktivitas barter (awal & akhir) selalu memunculkan notifikasi di KEDUA akun, dan seluruh perubahan disinkronkan ke Firestore sehingga kedua akun selalu sama. PENTING: WAJIB publish ulang Rules Firestore (field barter baru diizinkan) supaya setujui/tolak/konfirmasi jalan lintas perangkat.'],
+  ['1.10.1','PENAWARAN BARTER PASTI SAMPAI KE PEMILIK + NOTIFIKASI DUA AKUN. (1) Email pemilik barang dicari BERLAPIS: ownerEmail, lalu ownerId/ownerUid, lalu UID->email dari daftar pengguna cloud, lalu cocok nama akun — jadi penawaran tidak lagi gagal karena email pemilik kosong. (2) KOTAK KIRIM (outbox): penawaran dan notifikasi yang gagal terkirim (mis. cloud belum siap / offline) disimpan dan dikirim ulang otomatis saat cloud tersambung, jadi tidak hilang. (3) Pendengar barter sisi pemilik diperluas: cocok lewat ownerEmail ATAU ownerKey ATAU ownerId ATAU ownerUid (UID perangkat pemilik) ATAU itemId barang miliknya, sehingga penawaran selalu muncul di akun pemilik. (4) Pendengar dinyalakan ulang otomatis bila belum aktif saat cloud siap. (5) Notifikasi AWAL (Penawaran barter masuk) dan AKHIR (Barter selesai) dipastikan terkirim ke KEDUA akun. PENTING: wajib publish ulang Rules Firestore.'],
+  ['1.10.0','ALUR BARTER PENUH: SATU HALAMAN UNTUK KEDUA PIHAK. Deposit jaminan 20 MP + batas respon 72 jam, metode COD/Jasa Kirim/Asuransi Premium (60-200 MP) yang harus disetujui dua pihak, konfirmasi wajib foto bukti, selesai +30 MP, review +20/+10 MP, Sertifikat Barter, dan halaman Dampak Lingkungan. Semua tersinkron ke Firestore.'],
   ['1.9.78','PERBAIKAN BARTER: CHAT LAWAN & TOMBOL SETUJUI/TOLAK. (1) Penawaran barter kini selalu membawa email pemilik yang benar. Sebelumnya, untuk barang milik akun lain atau barang dari cloud, field ownerEmail kosong sehingga: penawaran TIDAK pernah sampai ke pemilik, tombol Setujui/Tolak tidak muncul, dan chat negosiasi tidak punya tujuan (pesan tidak terkirim). (2) Deteksi barter masuk kini mencocokkan ownerEmail ATAU ownerKey ATAU ownerId sehingga sisi pemilik barang selalu menerima penawaran. (3) Chat negosiasi dua arah diperbaiki: pesan dikirim ke email lawan lewat koleksi messages, dan halaman negosiasi otomatis menyegarkan saat pesan lawan masuk tanpa menutup halaman atau menghapus ketikan. (4) Tombol dipertegas menjadi "Setujui Penawaran" dan "Tolak". (5) Deposit barter 50 MP hanya ditarik setelah penawaran disetujui (sebelumnya ditarik saat masih menunggu respon). PENTING: aturan Firestore koleksi barters ikut diperbarui (pihak lawan boleh memperbarui status/trail/negosiasi) — WAJIB publish ulang Rules di Firebase Console agar Setujui/Tolak jalan lintas perangkat.'],
   ['1.9.77','ATURAN & PELANGGARAN BARTER DITERAPKAN PENUH sesuai dokumen "Aturan & Pelanggaran Barter v1.0". (1) Katalog 19 jenis pelanggaran dengan poin minus persis sesuai dokumen, dikelompokkan Paling Berat / Berat / Sedang / Ringan. (2) SISTEM SANKSI OTOMATIS: total poin minus ≤ -20 = Peringatan (notifikasi resmi + badge di profil, masih bisa barter), ≤ -50 = Suspensi (akun disuspend sementara: tidak bisa membuat penawaran barter baru, tidak bisa upload barang baru, barter berjalan masih bisa diselesaikan, menunggu review admin), ≤ -75 = Banned Permanen (akun diblokir, semua fitur ditutup, listing dihapus, banding lewat email support). (3) PROSES PELAPORAN: tombol Laporkan di halaman Negosiasi barter, detail barang, dan profil pengguna; form meminta jenis pelanggaran, kronologi (WAJIB), dan bukti gambar (opsional); status awal "Menunggu Review" dan poin minus TIDAK langsung diterapkan. (4) Halaman "Aturan & Pelanggaran Barter" berisi Bagian 1-4 (aturan umum, jenis pelanggaran, sanksi otomatis, proses pelaporan) dapat dibuka dari menu Akun. (5) Portal Admin: daftar laporan kini menampilkan jenis, tingkat, dan poin; ada tombol Setujui (poin minus otomatis diterapkan ke akun lewat adminGrants) dan Tolak. Tidak ada perubahan aturan Firestore yang wajib — koleksi violations (create: user, update: admin) dan adminGrants (create: admin) sudah mendukung.'],
   ['1.9.76','PERBAIKAN HALAMAN MASUK (LOGIN). Kolom "Konfirmasi Password" sekarang HANYA muncul saat mendaftar (Sign up). Sebelumnya, bila email yang dimasukkan belum tersimpan di perangkat itu, halaman "Masuk ke MUTARI" ikut menampilkan formulir buat akun dengan DUA kolom password + centang syarat, sehingga tampak seperti pendaftaran akun baru. Kini halaman masuk selalu hanya punya SATU kolom password dengan tombol "Masuk"; kolom konfirmasi dan daftar syarat hanya tampil pada alur "Buat Akun MUTARI". Akun baru tetap dibuat bila email belum ada, tetapi tampilannya tidak lagi menyerupai pendaftaran. Tidak ada perubahan lain pada fitur MUTARI.'],
@@ -3194,7 +3195,7 @@ const FB_RULES=[
 "      allow read: if isSigned();",
 "      allow create: if isSigned() && request.resource.data.fromUid == request.auth.uid;",
 "      allow update: if (isSigned()",
-"          // v1.9.78: identitas akun MUTARI memakai EMAIL (auth perangkat anonim), sehingga\n          // pihak lawan barter tidak selalu punya UID yang sama dengan pemilik barang.\n          // Karena itu pengguna yang sudah login boleh memperbarui HANYA field kolaboratif\n          // barter di bawah ini (status/negosiasi/pengiriman/konfirmasi). Field identitas\n          // dan kepemilikan tetap tidak bisa diubah oleh non-admin.\n          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt','cancelledAt','cancelledBy','trail','ship','confirms','confirmPhotos','reviews','deposits','insurance','insAmount','doneAt','refunded','ownerKey','ownerEmail','respondBy','acceptedAt','method','methodBy','methodName','methodApproved','methodApprovedBy','rewarded','reviewReleased','reviewDeadline','notifiedStart','notifiedEnd','certNo']))",
+"          // v1.9.78: identitas akun MUTARI memakai EMAIL (auth perangkat anonim), sehingga\n          // pihak lawan barter tidak selalu punya UID yang sama dengan pemilik barang.\n          // Karena itu pengguna yang sudah login boleh memperbarui HANYA field kolaboratif\n          // barter di bawah ini (status/negosiasi/pengiriman/konfirmasi). Field identitas\n          // dan kepemilikan tetap tidak bisa diubah oleh non-admin.\n          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt','cancelledAt','cancelledBy','trail','ship','confirms','confirmPhotos','reviews','deposits','insurance','insAmount','doneAt','refunded','ownerKey','ownerEmail','respondBy','acceptedAt','method','methodBy','methodName','methodApproved','methodApprovedBy','rewarded','reviewReleased','reviewDeadline','notifiedStart','notifiedEnd','certNo','ownerUid']))",
 "        || isAdmin();",
 "      allow delete: if isAdmin();",
 "    }",
@@ -11110,6 +11111,329 @@ function sbListenBarters(){
   try{ state.sbBarterUnsub=db.collection('barters').where('fromUid','==',sbUid()).limit(200).onSnapshot(apply, function(){}); }catch(e){}
   try{ state.sbBarterUnsub2=db.collection('barters').where('ownerEmail','==',myEmail()).limit(200).onSnapshot(apply, function(){}); }catch(e){}
   try{ state.sbBarterUnsub3=db.collection('barters').where('ownerKey','==',userKeyOf(myEmail())).limit(200).onSnapshot(apply, function(){}); }catch(e){}
+}
+
+
+/* =====================================================================================
+   MUTARI v1.10.1 — PASTIKAN PENAWARAN SAMPAI KE PEMILIK BARANG (+notifikasi dua akun)
+   -------------------------------------------------------------------------------------
+   Perbaikan:
+   1) Email pemilik dicari BERLAPIS (ownerEmail -> ownerId/ownerUid -> UID->email di
+      daftar pengguna cloud -> cocok nama akun). Tidak lagi kosong untuk barang orang lain.
+   2) KOTAK KIRIM (outbox): penawaran & notifikasi yang gagal/keburu offline TIDAK hilang,
+      disimpan lalu dikirim ulang otomatis saat cloud tersambung.
+   3) Pendengar barter pemilik diperluas: ownerEmail ATAU ownerKey ATAU ownerId ATAU
+      ownerUid (UID perangkat pemilik) ATAU itemId barang miliknya.
+   4) Pendengar dinyalakan ulang otomatis bila belum aktif saat cloud siap.
+   5) Notifikasi AWAL (penawaran masuk) & AKHIR (barter selesai) dipastikan terkirim ke
+      KEDUA akun (dikirim langsung + lewat outbox bila gagal).
+   ===================================================================================== */
+
+/* ---------- resolusi email pemilik: berlapis ---------- */
+function bxResolveOwner(it){
+  it=it||{};
+  var cands=[it.ownerEmail, it.email];
+  var uids=[String(it.ownerUid||''), String(it.ownerId||'')].filter(Boolean);
+  [it.ownerId, it.ownerUid].forEach(function(v){
+    v=String(v||'').toLowerCase().trim();
+    if(v && v.indexOf('@')>0) cands.push(v);
+  });
+  try{
+    [state.cloudUsers||{}, state.userByEmail||{}].forEach(function(map){
+      Object.keys(map).forEach(function(k){
+        var u=map[k]||{};
+        if(uids.indexOf(String(u.uid||''))>=0 && looksLikeEmail(u.email)) cands.push(String(u.email).toLowerCase());
+      });
+    });
+  }catch(e){}
+  var nm=String(it.owner||'').trim().toLowerCase();
+  if(nm){
+    try{
+      [state.cloudUsers||{}, state.userByEmail||{}].forEach(function(map){
+        Object.keys(map).forEach(function(k){
+          var u=map[k]||{};
+          if(String(u.name||'').trim().toLowerCase()===nm && looksLikeEmail(u.email)) cands.push(String(u.email).toLowerCase());
+        });
+      });
+      var acc=state.accounts||{};
+      Object.keys(acc).forEach(function(k){ if(String((acc[k]||{}).name||'').trim().toLowerCase()===nm) cands.push(String(k).toLowerCase()); });
+    }catch(e){}
+  }
+  for(var i=0;i<cands.length;i++){
+    var c=String(cands[i]||'').toLowerCase().trim();
+    if(looksLikeEmail(c)) return c;
+  }
+  return '';
+}
+
+/* ---------- KOTAK KIRIM (outbox) ---------- */
+function bxOutboxGet(){ try{ return LS.get('mutari_outbox',[])||[]; }catch(e){ return []; } }
+function bxOutboxSave(q){ try{ LS.set('mutari_outbox',(q||[]).slice(-300)); }catch(e){} }
+function bxOutboxAdd(entry){
+  try{
+    if(!entry) return;
+    var q=bxOutboxGet();
+    if(entry.k==='notif'){
+      var sig='n|'+entry.to+'|'+entry.at+'|'+entry.title;
+      if(q.some(function(x){ return x && ('n|'+x.to+'|'+x.at+'|'+x.title)===sig; })) return;
+    } else if(entry.k==='barter'){
+      var sig2='b|'+entry.id;
+      if(q.some(function(x){ return x && ('b|'+x.id)===sig2; })) return;
+    }
+    q.push(entry); bxOutboxSave(q);
+  }catch(e){}
+}
+function bxOutboxCount(){ return bxOutboxGet().length; }
+function bxPushNotifRaw(to,title,body,kind,at){
+  try{
+    sbAdd('notifications',{to:String(to||'').toLowerCase(),from:myEmail(),fromUid:sbUid(),
+      title:String(title||''),body:String(body||''),kind:String(kind||'info'),at:Number(at||Date.now())});
+    return true;
+  }catch(e){ return false; }
+}
+function bxFlushOutbox(){
+  try{
+    if(!sbOnline()) return;
+    var q=bxOutboxGet(); if(!q.length) return;
+    var rest=[];
+    q.forEach(function(it){
+      try{
+        if(!it) return;
+        if(it.k==='barter'){
+          var b=findBarterById(it.id); if(!b) return;
+          if(b.cloudId){ try{ sbWrite('barters', b.cloudId, bxBarterDoc(b)); }catch(e){ rest.push(it); } }
+          else { try{ sbPushBarter(b); }catch(e){ rest.push(it); } }
+        } else if(it.k==='notif'){
+          bxPushNotifRaw(it.to,it.title,it.body,it.kind,it.at);
+        }
+      }catch(e){ rest.push(it); }
+    });
+    bxOutboxSave(rest);
+  }catch(e){}
+}
+
+/* ---------- dokumen barter (dipakai untuk create & update) ---------- */
+function bxBarterDoc(b){
+  var now=Date.now();
+  var ownerEmail=String(b.ownerEmail||'').toLowerCase();
+  return {
+    title:String(b.title||''), owner:String(b.owner||''), ownerUid:String(b.ownerUid||b.ownerId||''),
+    ownerEmail:ownerEmail, ownerKey:(b.ownerKey||userKeyOf(ownerEmail)),
+    fromUid:sbUid(), fromName:myName(), fromEmail:myEmail(),
+    myTitle:String(b.myTitle||''), myItemId:String(b.myItemId||''), itemId:String(b.itemId||''),
+    targetValue:Number(b.targetValue||0), myValue:Number(b.myValue||0), bonus:Number(b.bonus||0),
+    status:String(b.status||'pending'), createdAt:Number(b.time||now), updatedAt:now,
+    respondBy:Number(b.respondBy||0), msg:String(b.msg||''),
+    method:String(b.method||''), methodBy:String(b.methodBy||''), methodName:String(b.methodName||''),
+    methodApproved:!!b.methodApproved, methodApprovedBy:String(b.methodApprovedBy||''),
+    insAmount:Number(b.insAmount||0),
+    deposits:b.deposits||{}, insurance:b.insurance||{}, confirms:b.confirms||{}, confirmPhotos:b.confirmPhotos||{},
+    reviews:b.reviews||{}, rewarded:b.rewarded||{}, refunded:b.refunded||{}, reviewReleased:b.reviewReleased||{},
+    ship:b.ship||null,
+    trail:(Array.isArray(b.trail)&&b.trail.length)?b.trail:[{t:'diajukan',at:now,by:myEmail()}]
+  };
+}
+function sbPushBarter(b){
+  if(!b) return null;
+  if(!sbOnline()){ bxOutboxAdd({k:'barter',id:b.id}); return null; }
+  try{
+    var doc=bxBarterDoc(b);
+    b.trail=doc.trail;
+    var p=sbAdd('barters',doc);
+    if(p&&p.then){
+      p.then(function(ref){ b.cloudId=ref.id; try{ LS.set('mutari_barters',state.barters); }catch(e){} })
+       .catch(function(){ try{ bxOutboxAdd({k:'barter',id:b.id}); }catch(e){} });
+    }
+    return p;
+  }catch(e){ try{ bxOutboxAdd({k:'barter',id:b.id}); }catch(_e){} return null; }
+}
+
+/* ---------- notifikasi: lokal + cloud + outbox ---------- */
+function notifyUser(email,title,body,kind){
+  var to=String(email||'').toLowerCase();
+  if(!to) return;
+  var now=Date.now();
+  var g=socialStore();
+  g.inbox[to]=g.inbox[to]||[];
+  g.inbox[to].unshift({t:title,b:body||'',kind:kind||'info',time:now,read:false});
+  if(g.inbox[to].length>60) g.inbox[to].length=60;
+  socialSave();
+  if(to===myEmail()){ try{ syncNotifDot(); }catch(e){} }
+  if(sbOnline() && sbEmailOk(to) && to!==myEmail()){ bxPushNotifRaw(to,title,body,kind,now); }
+  else if(sbEmailOk(to) && to!==myEmail()){ bxOutboxAdd({k:'notif',to:to,from:myEmail(),title:String(title||''),body:String(body||''),kind:String(kind||''),at:now}); }
+}
+
+/* ---------- pendengar barter diperluas (sisi pemilik pasti menerima) ---------- */
+function sbListenBarters(){
+  var db=sbDb(); if(!db) return;
+  var apply=function(snap){
+    var changed=false, incomingNew=null;
+    snap.forEach(function(x){
+      var v=x.data()||{}, b=(state.barters||[]).find(function(y){ return y && (y.cloudId===x.id); });
+      if(!b){
+        var oe=String(v.ownerEmail||'').toLowerCase(), ok=String(v.ownerKey||''),
+            oid=String(v.ownerId||'').toLowerCase(), ouid=String(v.ownerUid||'');
+        var mine=(oe && oe===myEmail())
+              || (ok && ok===userKeyOf(myEmail()))
+              || (oid && oid===myEmail())
+              || (ouid && ouid===sbUid());
+        if(!mine){
+          /* cadangan: barang ini milik kita (dicocokkan lewat ID barang) */
+          try{ if(v.itemId && (state.items||[]).some(function(i){ return String(i.id)===String(v.itemId); })) mine=true; }catch(e){}
+        }
+        if(mine){
+          b={id:'brc'+x.id, cloudId:x.id, itemId:String(v.itemId||''), title:String(v.title||''),
+             owner:String(v.owner||''), ownerId:String(v.ownerUid||''), ownerUid:String(v.ownerUid||''),
+             ownerEmail:(oe||myEmail()), ownerKey:(ok||userKeyOf(oe||myEmail())),
+             myItemId:String(v.myItemId||''), myTitle:String(v.myTitle||''),
+             targetValue:Number(v.targetValue||0), myValue:Number(v.myValue||0), bonus:Number(v.bonus||0),
+             status:String(v.status||'pending'), time:Number(v.createdAt||Date.now()), incoming:true,
+             fromName:String(v.fromName||''), fromEmail:String(v.fromEmail||''),
+             respondBy:Number(v.respondBy||0), msg:String(v.msg||''),
+             deposits:v.deposits||{}, insurance:v.insurance||{}, confirms:v.confirms||{}, confirmPhotos:v.confirmPhotos||{},
+             reviews:v.reviews||{}, rewarded:v.rewarded||{}, refunded:v.refunded||{}, reviewReleased:v.reviewReleased||{},
+             method:String(v.method||''), methodBy:String(v.methodBy||''), methodName:String(v.methodName||''),
+             methodApproved:!!v.methodApproved, methodApprovedBy:String(v.methodApprovedBy||''), insAmount:Number(v.insAmount||0),
+             ship:v.ship||null, trail:(Array.isArray(v.trail)?v.trail:[])};
+          state.barters=Array.isArray(state.barters)?state.barters:[];
+          state.barters.unshift(b); changed=true; incomingNew=b;
+        }
+        return;
+      }
+      if(v.status && b.status!==v.status){ b.status=v.status; changed=true; }
+      if(v.respondBy) b.respondBy=Number(v.respondBy);
+      if(v.method!==undefined) b.method=String(v.method||'');
+      if(v.methodBy!==undefined) b.methodBy=String(v.methodBy||'');
+      if(v.methodName!==undefined) b.methodName=String(v.methodName||'');
+      if(v.methodApproved!==undefined) b.methodApproved=!!v.methodApproved;
+      if(v.methodApprovedBy!==undefined) b.methodApprovedBy=String(v.methodApprovedBy||'');
+      if(v.insAmount!==undefined) b.insAmount=Number(v.insAmount||0);
+      if(v.deposits) b.deposits=v.deposits;
+      if(v.insurance) b.insurance=v.insurance;
+      if(v.confirms) b.confirms=v.confirms;
+      if(v.confirmPhotos) b.confirmPhotos=v.confirmPhotos;
+      if(v.reviews) b.reviews=v.reviews;
+      if(v.rewarded) b.rewarded=v.rewarded;
+      if(v.refunded) b.refunded=v.refunded;
+      if(v.reviewReleased) b.reviewReleased=v.reviewReleased;
+      if(v.ship) b.ship=v.ship;
+      if(Array.isArray(v.trail)) b.trail=v.trail;
+      if(v.doneAt) b.doneTime=Number(v.doneAt);
+      changed=true;
+    });
+    if(changed){
+      try{ LS.set('mutari_barters',state.barters); }catch(e){}
+      try{ if(state.route==='akun'||state.route==='barter'||state.route==='home') render(); }catch(e){}
+      try{ negoRefresh(); }catch(e){}
+      try{ barterTick(); }catch(e){}
+      if(incomingNew){ try{ bxNotifyStart(incomingNew); }catch(e){} }
+    }
+  };
+  try{ if(state.sbBarterUnsub) state.sbBarterUnsub(); }catch(e){}
+  try{ if(state.sbBarterUnsub2) state.sbBarterUnsub2(); }catch(e){}
+  try{ if(state.sbBarterUnsub3) state.sbBarterUnsub3(); }catch(e){}
+  try{ if(state.sbBarterUnsub4) state.sbBarterUnsub4(); }catch(e){}
+  try{ if(state.sbBarterUnsub5) state.sbBarterUnsub5(); }catch(e){}
+  try{ state.sbBarterUnsub=db.collection('barters').where('fromUid','==',sbUid()).limit(200).onSnapshot(apply,function(){}); }catch(e){}
+  try{ state.sbBarterUnsub2=db.collection('barters').where('ownerEmail','==',myEmail()).limit(200).onSnapshot(apply,function(){}); }catch(e){}
+  try{ state.sbBarterUnsub3=db.collection('barters').where('ownerKey','==',userKeyOf(myEmail())).limit(200).onSnapshot(apply,function(){}); }catch(e){}
+  try{ state.sbBarterUnsub4=db.collection('barters').where('ownerUid','==',sbUid()).limit(200).onSnapshot(apply,function(){}); }catch(e){}
+  try{
+    var myIds=(state.items||[]).map(function(i){ return i && i.id; }).filter(Boolean).slice(0,30);
+    if(myIds.length) state.sbBarterUnsub5=db.collection('barters').where('itemId','in',myIds).limit(200).onSnapshot(apply,function(){});
+  }catch(e){}
+}
+/* nyalakan ulang pendengar bila belum aktif saat cloud siap */
+function bxEnsureListeners(){
+  try{
+    if(!sbOnline()) return;
+    if(state.sbBarterUnsub || state.sbBarterUnsub2 || state.sbBarterUnsub3 || state.sbBarterUnsub4) return;
+    sbListenBarters();
+    if(!state.sbNotifUnsub){ try{ sbListenNotifications(); }catch(e){} }
+  }catch(e){}
+}
+
+/* ---------- kirim penawaran barter (versi kokoh) ---------- */
+function offerBarter(targetId, myItemId, opts){
+  closeSheet();
+  opts=opts||{};
+  var target=findItem(targetId);
+  if(!target){ toast('Barang tidak ditemukan'); return; }
+  if(isMine(target)){ toast('Ini barangmu sendiri — pilih barang milik pengguna lain di pasar'); return; }
+  if((state.barters||[]).some(function(x){ return x.itemId===targetId && x.myItemId===(myItemId||'') && barterIsLocked(x.status); })){ toast('Penawaran untuk barang ini sudah ada'); return; }
+  var mine=myItemId?findItem(myItemId):null;
+  var n=target.owner||'Pengguna';
+  var ownerEmail=bxResolveOwner(target);
+  var ownerUid=String(target.ownerUid||target.ownerId||'');
+  var bonus=Math.max(0,Number(opts.bonus)||0);
+  if(bonus>Number(state.points||0)){ toast('Poin tidak cukup untuk bonus'); return; }
+  /* --- chat negosiasi --- */
+  state.chats=Array.isArray(state.chats)?state.chats:[];
+  var chat=state.chats.find(function(c){ return (ownerEmail && String(c.email||'').toLowerCase()===ownerEmail) || c.name===n; });
+  if(!chat){
+    chat={id:'c'+Date.now(),name:n,email:ownerEmail||String(target.ownerId||'').toLowerCase(),type:'Negosiasi',archived:false,official:false,last:'',time:'Baru saja',unread:0,msgs:[]};
+    state.chats.unshift(chat);
+  }
+  var line=(opts.msg&&String(opts.msg).trim())||('Halo, saya tertarik dengan '+target.title+'.');
+  chat.msgs=Array.isArray(chat.msgs)?chat.msgs:[];
+  chat.msgs.push({me:true,t:line,at:Date.now()});
+  chat.last=line; chat.time='Baru saja';
+  try{ LS.set('mutari_chats',state.chats); }catch(e){}
+  try{ sbEnsureChat(chat); }catch(e){}
+  try{ sbPushChatMsg(chat,line); }catch(e){}
+  try{ if(ownerEmail) sbPushChatMsg2(ownerEmail,line); }catch(e){}
+  /* --- dokumen penawaran barter --- */
+  var now=Date.now();
+  var b={id:'br'+now, itemId:targetId, title:target.title, owner:n,
+    ownerId:String(target.ownerId||''), ownerUid:ownerUid, ownerEmail:ownerEmail, ownerKey:userKeyOf(ownerEmail),
+    myItemId:mine?mine.id:'', myTitle:mine?mine.title:'',
+    targetValue:offerVal(target), myValue:offerVal(mine), bonus:bonus, msg:line,
+    status:'pending', time:now, respondBy:now+BARTER_RESPONSE_MS, notifiedStart:false,
+    trail:[{t:'penawaran dikirim',at:now,by:myEmail()}]};
+  state.barters=Array.isArray(state.barters)?state.barters:[];
+  state.barters.unshift(b);
+  try{ LS.set('mutari_barters',state.barters); }catch(e){}
+  if(bonus>0){ try{ spendPoints(bonus,'Bonus barter','🤝'); b.bonusSpent=true; }catch(e){} }
+  /* --- kirim ke cloud (langsung, atau masukkan kotak kirim) --- */
+  try{ sbPushBarter(b); }catch(e){ bxOutboxAdd({k:'barter',id:b.id}); }
+  /* --- notifikasi AWAL ke KEDUA akun --- */
+  b.notifiedStart=true;
+  try{
+    bxNotifyStart(b);
+  }catch(e){}
+  if(ownerEmail && ownerEmail!==myEmail()){
+    try{ notifyUser(ownerEmail,'Penawaran barter masuk 💌', myName()+' mengajukan barter untuk "'+target.title+'"'+(mine?' dengan "'+mine.title+'"':'')+(bonus?(' + '+bonus+' MP'):'')+'. Buka untuk Terima / Tolak.','barter'); }catch(e){}
+  }
+  try{ pushNotif('Penawaran barter terkirim','Penawaran "'+target.title+'" terkirim · Menunggu Respon.','barter'); }catch(e){}
+  try{ if($('#walletOv') && $('#walletOv').classList.contains('open')) walletRender(); }catch(e){}
+  if(ownerEmail){
+    toast('Penawaran terkirim ke '+n+' · Menunggu Respon ✓');
+  }else{
+    toast('⚠️ Email pemilik belum diketahui — penawaran disimpan & dikirim otomatis saat data pemilik tersedia.');
+  }
+  try{ closeSheet(); openSub('riwayat'); }catch(e){}
+  try{ setTimeout(function(){ bxFlushOutbox(); },1500); }catch(e){}
+}
+
+/* ---------- tick: hadiah, jaminan, notifikasi, outbox, pendengar ---------- */
+function barterTick(){
+  try{ bxEnsureListeners(); }catch(e){}
+  try{ bxFlushOutbox(); }catch(e){}
+  try{
+    var me=myEmail();
+    (state.barters||[]).forEach(function(b){
+      if(!b) return;
+      if(b.status==='pending' && !b.notifiedStart){ b.notifiedStart=true; bxNotifyStart(b); barterPatch(b,{notifiedStart:true}); }
+      if(b.status==='accepted'||b.status==='shipping'||b.status==='done'){ ensureBarterDeposit(b); }
+      if(b.status==='rejected'||b.status==='cancelled'||b.status==='expired'){ refundBarterDeposit(b); }
+      if(b.status==='done'){
+        if(!(b.rewarded&&b.rewarded[me])) bxRewardSelf(b);
+        if(!(b.refunded&&b.refunded[me])) refundBarterDeposit(b);
+        if(!b.notifiedEnd){ b.notifiedEnd=true; bxNotifyEnd(b); barterPatch(b,{notifiedEnd:true}); }
+      }
+      if(b.methodApproved && b.method==='insurance' && !(b.insurance&&b.insurance[me])) bxChargeInsurance(b);
+    });
+  }catch(e){}
 }
 
 
